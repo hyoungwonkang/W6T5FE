@@ -23,7 +23,7 @@ const Detail = (props) => {
           </Grid>
           <Grid>
             <Text textAlign="right">2022-04-04 21:00:00</Text>
-            <Text>모자랑 니트베스트 코디해봤어요🤟</Text>
+            <Text>안녕하세요! 모자랑 니트베스트 코디해봤어요🤟</Text>
           </Grid>
         </Grid>
         <Grid>
