@@ -31,9 +31,9 @@ const Image = (props) => {
 Image.defaultProps = {
   shape: "",
   src_01:
-    "https://d1fdloi71mui9q.cloudfront.net/jl9DQQM1QxiPQklpiKii_GjzZ0fFXW61vAGZx",
+    "https://visla.kr/wp/wp-content/uploads/2015/03/The-Simpsons-Illustrated-in-Streetwear-05.jpg",
   src_02:
-    "https://mblogthumb-phinf.pstatic.net/MjAyMDA4MDNfMjAx/MDAxNTk2NDQ1NjUzODA0.cUdM6Gatr8jKhmBwWFhGJaeVg6t0wPwkwshA11gZuY0g.zot86j9Rxj7824AkPhlT_5Bv3MkaP2-MxCELXiMks9kg.JPEG.hwadamtat/IMG_5813.JPG?type=w800",
+    "https://image.msscdn.net/images/prd_img/20210522/1962786/detail_1962786_1_500.jpg",
   size: 36,
   border: false,
 };
@@ -57,11 +57,11 @@ const AspectOutter = styled.div`
 `;
 const AspectInner = styled.div`
   position: relative;
-  padding-top: 75%;
+  padding-top: 100%;
   overflow: hidden;
   background-image: url("${(props) => props.src_02}");
   background-size: cover;
-  background-position: center;
+  background-position: top;
   /* border: 1px solid green; */
 `;
 
