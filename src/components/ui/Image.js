@@ -31,7 +31,7 @@ const Image = (props) => {
 Image.defaultProps = {
   shape: "",
   src_01:
-    "https://visla.kr/wp/wp-content/uploads/2015/03/The-Simpsons-Illustrated-in-Streetwear-05.jpg",
+    "https://image.msscdn.net/images/style/detail/26197/detail_26197_1_500.jpg",
   src_02:
     "https://image.msscdn.net/images/prd_img/20210522/1962786/detail_1962786_1_500.jpg",
   size: 36,
@@ -75,7 +75,7 @@ const ImageCircle = styled.div`
 
   background-image: url("${(props) => props.src_01}");
   background-size: cover;
-  background-position: center;
+  background-position: top;
   margin: 4px;
 `;
 
