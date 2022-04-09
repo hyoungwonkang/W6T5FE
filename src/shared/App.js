@@ -3,6 +3,7 @@ import { Route } from "react-router-dom";
 import { ConnectedRouter } from "connected-react-router";
 import { history } from "../redux/configureStore";
 
+import Write from "../pages/Write";
 import Detail from "../pages/Detail";
 
 import { Header } from "../components/core";
@@ -14,6 +15,7 @@ function App() {
       <Grid>
         <Header></Header>
         <ConnectedRouter history={history}>
+          <Route path="/postWrite" exact component={Write} />
           <Route path="/detail" exact component={Detail} />
         </ConnectedRouter>
       </Grid>

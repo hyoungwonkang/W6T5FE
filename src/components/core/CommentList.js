@@ -1,24 +1,8 @@
 import React from "react";
 import { Grid, Text, Image } from "../ui";
-
-import { useDispatch, useSelector } from "react-redux";
-import { actionCreators as commentActions } from "../../redux/modules/comment";
+import { Button } from "../core";
 
 const CommentList = (props) => {
-  const dispatch = useDispatch();
-  //   const comment_list = useSelector((state) => state.comment.list);
-  //   const { post_id } = props;
-  //   console.log();
-
-  //   React.useEffect(() => {
-  //     if (!comment_list[post_id]) {
-  //       dispatch(commentActions.getCommentFB(post_id));
-  //     }
-  //   }, []);
-
-  //   if (!comment_list[post_id] || !post_id) {
-  //     return null;
-  //   }
   return (
     <React.Fragment>
       <Grid padding="16px">
@@ -28,10 +12,6 @@ const CommentList = (props) => {
   );
 };
 
-// CommentList.defaultProps = {
-//   post_id: null,
-// };
-
 export default CommentList;
 
 const CommentItem = (props) => {
@@ -39,17 +19,23 @@ const CommentItem = (props) => {
     props;
   return (
     <Grid is_flex>
-      <Grid is_flex width="auto">
+      <Grid width="auto" center>
         <Image shape="circle" border="2px solid #dddddd" />
         <Text>{user_name}</Text>
       </Grid>
       <Grid is_flex margin="0px 0px 0px 15px">
-        <Text>{contents}</Text>
+        <Text margin="0px 10px 0px 5px">{contents}</Text>
+        <Text>{insert_dt}</Text>
       </Grid>
+      <Button width="auto" padding="8px" margin="0px 3px">
+        M
+      </Button>
+      <Button width="auto" padding="8px" margin="0px 3px">
+        D
+      </Button>
     </Grid>
   );
 };
-//commentList가 어차피 export해줘서 안해도 된다.
 
 CommentItem.defaultProps = {
   user_profile:
