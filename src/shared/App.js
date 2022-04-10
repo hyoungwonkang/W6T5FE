@@ -1,36 +1,31 @@
 import React from 'react';
+import { Route } from 'react-router-dom';
 
-//Library
-import { Route, useHistory } from 'react-router-dom';
+import { Button, Jumbotron, Container } from 'react-bootstrap';
 import { ConnectedRouter } from 'connected-react-router';
 import { history } from '../redux/configureStore';
-import { Grid, Image } from '../components/ui';
-import { Header } from '../components/core';
 
-//import components
-import Login from '../pages/Login';
+import { Grid } from '../components/ui';
+
 import Main from '../pages/Main';
-import Signup from '../pages/Signup';
 
 function App() {
   return (
     <React.Fragment>
-      <Header />
-      <Grid is_flex padding='4px 16px'>
-        <Grid padding='4px 16px'>
-          <Grid padding='0px 16px' bg={'#EFF6FF'}>
-            <Grid></Grid>
-          </Grid>
-        </Grid>
+      <Jumbotron fluid>
+        <Container>
+          <h1>Fluid jumbotron</h1>
+          <p>
+            This is a modified jumbotron that occupies the entire horizontal
+            space of its parent.
+          </p>
+        </Container>
+      </Jumbotron>
+      <Grid>
+        <ConnectedRouter history={history}>
+          <Route path='/main' exact component={Main} />
+        </ConnectedRouter>
       </Grid>
-      <ConnectedRouter history={history}>
-        <Route path='/home'>
-          <Image shape='rectangle'></Image>
-        </Route>
-        <Route path='/main' exact component={Main} />
-        <Route path='/login' exact component={Login} />
-        <Route path='/signup' exact component={Signup} />
-      </ConnectedRouter>
     </React.Fragment>
   );
 }
