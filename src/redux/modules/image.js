@@ -17,22 +17,22 @@ const initialState = {
   preview: null, //preview가 없으면 null로 시작
 };
 
-const uploadImageFB = (image) => {
-  return function (dispatch, getState, { history }) {
-    dispatch(uploading(true)); //위에 적용했던 false를 이제 업로딩시작하기 때문에 true로 바꿈
-    const _upload = storage.ref(`images/${image.name}`).put(image); //firebase 문법 .put()
+// const uploadImageFB = (image) => {
+//   return function (dispatch, getState, { history }) {
+//     dispatch(uploading(true)); //위에 적용했던 false를 이제 업로딩시작하기 때문에 true로 바꿈
+//     const _upload = storage.ref(`images/${image.name}`).put(image); //firebase 문법 .put()
 
-    _upload.then((snapshot) => {
-      // 이미지 링크 받는곳
-      console.log(snapshot);
-      // dispatch(uploading(false));  //여기에서 업로딩은 끝이 났습니다.
-      snapshot.ref.getDownloadURL().then((url) => {
-        dispatch(uploadImage(url));
-        console.log(url);
-      });
-    });
-  };
-};
+//     _upload.then((snapshot) => {
+//       // 이미지 링크 받는곳
+//       console.log(snapshot);
+//       // dispatch(uploading(false));  //여기에서 업로딩은 끝이 났습니다.
+//       snapshot.ref.getDownloadURL().then((url) => {
+//         dispatch(uploadImage(url));
+//         console.log(url);
+//       });
+//     });
+//   };
+// };
 // draft가져오는 구간까지는 복붙해도 됩니다.
 export default handleActions(
   {
@@ -56,7 +56,6 @@ export default handleActions(
 
 const actionCreators = {
   uploadImage,
-  uploadImageFB,
   setPreview,
 };
 
