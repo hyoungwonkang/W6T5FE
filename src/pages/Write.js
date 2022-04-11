@@ -2,9 +2,47 @@ import React from "react";
 import { Grid, Image, Text } from "../components/ui";
 import { Button, Input, Upload } from "../components/core";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { actionCreators as postActions } from "../redux/modules/post";
+import { actionCreators as imageActions } from "../redux/modules/image";
 
 const Write = (props) => {
+  const { history } = props;
+  // const is_login = useSelector((state) => state.user.is_login);
+  const post_list = useSelector((state) => state.post.list);
+
+  // console.log(props.match.params.id);
+  const postId = props.match.params.id;
+  // const is_edit = postId ? true : false;
+  // let _post = is_edit ? post_list.find((p) => p.id === postId) : null;
+
+  // React.useEffect(() => {
+  //   if (is_edit && !_post) {
+  //     console.log("게시물 정보가 없습니다.");
+  //     history.goBack();
+  //     return;
+  //   }
+  //   if (is_edit) {
+  //     dispatch(imageActions.setPreview(_post.image));
+  //   } else {
+  //     dispatch(imageActions.setPreview(null));
+  //   }
+  // }, []);
+
+  const [content, setContent] = React.useState();
+  const changeContent = (e) => {
+    setContent(e.target.value);
+  };
+
+  const dispatch = useDispatch();
+  const addPost = () => {
+    if (!content || !preview) {
+      window.alert("게시글을 모두 작성해주세요.");
+      return;
+    }
+    dispatch(postActions.addPostDB(content));
+  };
+
   const preview = useSelector((state) => state.image.preview);
 
   return (
@@ -23,18 +61,20 @@ const Write = (props) => {
         </Grid>
         <Image
           shape="rectangle"
-          src_02={
-            preview
-              ? preview
-              : "https://ssr-releases-cdn.paperlesspost.com/_next/static/images/MobileMediaPoster-553a691ac40df070a04c82b601a117ec.jpg"
-          }
+          src_02={preview ? preview : "https://ifh.cc/g/g0oyvr.png"}
         />
       </Grid>
       <Grid padding="16px">
-        <Input multiLine rows label="게시글 내용" />
+        <Input
+          value={content}
+          _onChange={changeContent}
+          multiLine
+          rows
+          label="게시글 내용"
+        />
       </Grid>
       <Grid padding="16px">
-        <Button text="작성하기"></Button>
+        <Button _onClick={addPost} text="작성하기"></Button>
       </Grid>
     </React.Fragment>
   );

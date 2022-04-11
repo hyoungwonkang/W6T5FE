@@ -2,30 +2,54 @@ import React from "react";
 import { Grid, Text, Image } from "../ui";
 import { Button } from "../core";
 
+import { useDispatch, useSelector } from "react-redux";
+import { actionCreators as commentActions } from "../../redux/modules/comment";
+
 const CommentList = (props) => {
+  const dispatch = useDispatch();
+  const comment_list = useSelector((state) => state.comment.list);
+  const { postId } = props;
+  console.log(comment_list, comment_list.postId);
+  React.useEffect(() => {
+    if (!comment_list[postId]) {
+      dispatch(commentActions.getCommentDB(postId));
+    }
+  }, []);
+
+  if (!comment_list[postId] || !postId) {
+    return null;
+  }
+
+  console.log(comment_list);
   return (
     <React.Fragment>
       <Grid padding="16px">
-        <CommentItem />
+        {comment_list[postId].map((c, i) => {
+          return <CommentItem key={i} {...c} />;
+        })}
+        {/* <CommentItem /> */}
       </Grid>
     </React.Fragment>
   );
 };
 
+CommentList.defaultProps = {
+  postId: 1,
+};
+
 export default CommentList;
 
 const CommentItem = (props) => {
-  const { user_profile, user_name, user_id, post_id, insert_dt, contents } =
-    props;
+  const { userName, date, comment } = props;
   return (
     <Grid is_flex>
       <Grid width="auto" center>
         <Image shape="circle" border="2px solid #dddddd" />
-        <Text>{user_name}</Text>
+        <Text>{userName}</Text>
       </Grid>
       <Grid is_flex margin="0px 0px 0px 15px">
-        <Text margin="0px 10px 0px 5px">{contents}</Text>
-        <Text>{insert_dt}</Text>
+        <Text margin="0px 10px 0px 5px">{comment}</Text>
+        <Text>{date}</Text>
       </Grid>
       <Button width="auto" padding="8px" margin="0px 3px">
         M
@@ -38,11 +62,11 @@ const CommentItem = (props) => {
 };
 
 CommentItem.defaultProps = {
-  user_profile:
+  userProfile:
     "https://visla.kr/wp/wp-content/uploads/2015/03/The-Simpsons-Illustrated-in-Streetwear-05.jpg",
-  user_name: "yoonji",
-  user_id: "uooh",
-  post_id: 1,
-  contents: "멋있어요! 모자 어디서 사셨어요??",
-  insert_dt: "2022-04-09 09:00:00",
+  userName: "yoonji",
+  userId: "uooh",
+  postId: 1,
+  comment: "멋있어요! 모자 어디서 사셨어요??",
+  date: "2022-04-09 09:00:00",
 };

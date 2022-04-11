@@ -2,8 +2,9 @@ import React from "react";
 import styled from "styled-components";
 
 const Image = (props) => {
-  const { shape, src_01, src_02, size, border } = props;
+  const { shape, src, src_01, src_02, size, border } = props;
   const styles = {
+    src: src,
     src_01: src_01,
     src_02: src_02,
     size: size,
@@ -30,6 +31,7 @@ const Image = (props) => {
 };
 Image.defaultProps = {
   shape: "",
+  src: "https://static.zara.net/photos///contents/mkt/spots/ss22-north-man-new/subhome-xmedia-14-3-cnhktwkrjp//w/1132/IMAGE-landscape-0b101f9d-9363-40c1-b339-d2a1b2dd3674-default_0.jpg?ts=1649417896174",
   src_01:
     "https://image.msscdn.net/images/style/detail/26197/detail_26197_1_500.jpg",
   src_02:
@@ -40,12 +42,11 @@ Image.defaultProps = {
 
 //기본 정사각형
 const ImageDefault = styled.div`
-  --size: ${(props) => props.size}px;
-  width: var(--size);
-  height: var(--size);
-  background-image: url("${(props) => props.src_01}");
-  background-size: cover;
-  background-position: center;
+  width: 100%;
+  height: 90vh;
+  background-image: url("${(props) => props.src}");
+  background-size: contain;
+  background-position: top;
   ${(props) => (props.border ? `border: ${props.border};` : "")}
 `;
 

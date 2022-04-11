@@ -53,13 +53,7 @@ const Detail = (props) => {
           </Grid>
         </Grid>
         <Grid>
-          <Comment />
-          <CommentList />
-          <CommentList />
-          <CommentList />
-          <CommentList />
-          <CommentList />
-          <CommentList />
+          <Comment postId={1} />
           <CommentList />
         </Grid>
       </Grid>

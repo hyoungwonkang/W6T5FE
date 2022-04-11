@@ -13,6 +13,7 @@ const Grid = (props) => {
     border,
     bg,
     center,
+    right,
     scroll,
     _onClick,
   } = props;
@@ -27,6 +28,7 @@ const Grid = (props) => {
     bg: bg,
     center: center,
     scroll: scroll,
+    right: right,
   };
 
   return (
@@ -46,6 +48,7 @@ Grid.defaultProps = {
   border: false,
   bg: false,
   center: false,
+  right: false,
   scroll: false,
   _onClick: () => {},
 };
@@ -63,6 +66,7 @@ const GridBox = styled.div`
       ? `display:flex; align-items:center; justify-content:space-between;`
       : ""}
   ${(props) => (props.center ? `text-align:center;` : "")}
+  ${(props) => (props.right ? `text-align:right;` : "")}
   ${(props) => (props.scroll ? `overflow-y:scroll;` : "")}
 `;
 

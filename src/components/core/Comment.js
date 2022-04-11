@@ -7,14 +7,14 @@ import { useDispatch } from "react-redux";
 
 const Comment = (props) => {
   const dispatch = useDispatch();
-  const [comment_text, setCommentText] = React.useState();
+  const [comment, setCommentText] = React.useState();
 
-  const { post_id } = props;
+  const { postId } = props;
   const onChange = (e) => {
     setCommentText(e.target.value);
   };
   const write = () => {
-    dispatch(commentActions.addCommentFB(post_id, comment_text));
+    dispatch(commentActions.addCommentDB(postId, comment));
     setCommentText(""); //작성후 텍스트를 제거해줌
   };
   return (
@@ -23,7 +23,7 @@ const Comment = (props) => {
         <Input
           placeholder="댓글을 입력해주세요."
           _onChange={onChange}
-          value={comment_text}
+          value={comment}
           onSubmit={write}
           is_submit
         />
