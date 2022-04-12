@@ -19,8 +19,8 @@ function App() {
         <ConnectedRouter history={history}>
           <Route path="/" exact component={Home} />
           <Route path="/main" exact component={Main} />
-          <Route path="/postWrite/:1" exact component={Write} />
-          <Route path="/detail/:1" exact component={Detail} />
+          <Route path="/postWrite/:id" exact component={Write} />
+          <Route path="/detail/:id" exact component={Detail} />
         </ConnectedRouter>
       </Grid>
     </React.Fragment>

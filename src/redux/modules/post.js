@@ -10,67 +10,64 @@ const SET_POST = "SET_POST"; //가져온 게시물을 넣어주는 애
 const ADD_POST = "ADD_POST";
 
 //액션생성
-const setPost = createAction(SET_POST, (post_list) => ({ post_list }));
+const setPost = createAction(SET_POST, (posts) => ({ posts }));
 const addPost = createAction(ADD_POST, (post) => ({ post }));
 
 //초기값
 const initialState = {
   list: [],
-  paging: { star: null, next: null, size: 3 },
+  // paging: { star: null, next: null, size: 3 },
 };
 const initialPost = {
-  image: "",
-  content: "",
   date: moment().format("YYYY-MM-DD kk:mm:ss"),
+  image: "이미지2",
+  content: "리액트",
 };
 
 //미들웨어
 const getPostDB = () => {
-  return function (dispatch, getState, { history }) {
-    axios
-      .orderBy("date", "desc")
-      .get()
-      .then((docs) => {
-        let post_list = [];
-        docs.forEach((doc) => {
-          console.log(doc.id, doc.data());
-          let post = {
-            id: doc.id,
-            user_info: {
-              user_name: doc.data().user_name,
-              user_profile: doc.data().user_profile,
-              user_id: doc.data().user_id,
-            },
-            image_url: doc.data().image_url,
-            contents: doc.data().contents,
-            comment_count: doc.data().comment_count,
-            insert_dt: doc.data().insert_dt,
-          };
-          post_list.push(post);
-        });
-        console.log(post_list);
-        dispatch(setPost(post_list));
+  return async function (dispatch, getState, { history }) {
+    await axios.get("http://52.78.194.238/api/postGet").then((res) => {
+      console.log(res.data);
+      let _posts = [];
+      res.data.posts.forEach((posts) => {
+        _posts.push({ id: posts.id, ...posts });
       });
+      dispatch(setPost(_posts));
+    });
   };
 };
 
-const addPostDB = (contents = "") => {
+const getOnePostDB = (id) => {
+  return async function (dispatch, getState, { history }) {
+    await axios.get(`http://52.78.194.238/api/detail/${id}`).then((res) => {
+      console.log(res.data);
+      let post = res.data.posts;
+      dispatch(setPost([post]));
+    });
+  };
+};
+
+const addPostDB = (content = "") => {
   return function (dispatch, getState, { history }) {
-    const _user = getState().user.user;
-    const user_info = {
-      user_name: _user.user_name,
-      user_id: _user.uid,
-      user_profile: _user.user_profile,
-    };
     const _post = {
       ...initialPost,
-      contents: contents,
-      insert_dt: moment().format("YYYY-MM-DD kk:mm:ss"),
+      content: content,
+      date: moment().format("YYYY-MM-DD kk:mm:ss"),
     };
+    console.log(_post);
+    axios
+      .post("http://52.78.194.238/api/postWrite")
+      .then((doc) => {
+        dispatch(addPost(_post));
+        history.replace("/main");
 
-    const _image = getState().image.preview;
-    console.log(_image);
-    console.log(typeof _image);
+        // dispatch(imageActions.setPreview(null));
+      })
+      .catch((err) => {
+        window.alert("포스트 작성에 문제가 있습니다.");
+        console.log("게시물 작성이 실패했습니다.", err);
+      });
   };
 };
 
@@ -90,7 +87,7 @@ export default handleActions(
         if (action.payload.paging) {
           draft.paging = action.payload.paging;
         }
-        draft.list = action.payload.post_list;
+        draft.list = action.payload.posts;
       }),
     [ADD_POST]: (state, action) =>
       produce(state, (draft) => {
@@ -104,6 +101,7 @@ const actionCreators = {
   setPost,
   addPost,
   getPostDB,
+  getOnePostDB,
   addPostDB,
 };
 

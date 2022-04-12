@@ -9,7 +9,7 @@ const CommentList = (props) => {
   const dispatch = useDispatch();
   const comment_list = useSelector((state) => state.comment.list);
   const { postId } = props;
-  console.log(comment_list, comment_list.postId);
+
   React.useEffect(() => {
     if (!comment_list[postId]) {
       dispatch(commentActions.getCommentDB(postId));
@@ -19,22 +19,20 @@ const CommentList = (props) => {
   if (!comment_list[postId] || !postId) {
     return null;
   }
-
-  console.log(comment_list);
+  // console.log(comment_list);
   return (
     <React.Fragment>
       <Grid padding="16px">
         {comment_list[postId].map((c, i) => {
           return <CommentItem key={i} {...c} />;
         })}
-        {/* <CommentItem /> */}
       </Grid>
     </React.Fragment>
   );
 };
 
 CommentList.defaultProps = {
-  postId: 1,
+  postId: null,
 };
 
 export default CommentList;
@@ -44,7 +42,11 @@ const CommentItem = (props) => {
   return (
     <Grid is_flex>
       <Grid width="auto" center>
-        <Image shape="circle" border="2px solid #dddddd" />
+        <Image
+          shape="circle"
+          border="2px solid #dddddd"
+          src_01={props.userProfile}
+        />
         <Text>{userName}</Text>
       </Grid>
       <Grid is_flex margin="0px 0px 0px 15px">
@@ -62,11 +64,10 @@ const CommentItem = (props) => {
 };
 
 CommentItem.defaultProps = {
-  userProfile:
-    "https://visla.kr/wp/wp-content/uploads/2015/03/The-Simpsons-Illustrated-in-Streetwear-05.jpg",
-  userName: "yoonji",
-  userId: "uooh",
-  postId: 1,
-  comment: "멋있어요! 모자 어디서 사셨어요??",
-  date: "2022-04-09 09:00:00",
+  userProfile: "",
+  userName: "",
+  userId: "",
+  postId: "",
+  comment: "",
+  date: "",
 };

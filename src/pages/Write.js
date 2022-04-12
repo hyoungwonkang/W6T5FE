@@ -8,13 +8,11 @@ import { actionCreators as imageActions } from "../redux/modules/image";
 
 const Write = (props) => {
   const { history } = props;
-  // const is_login = useSelector((state) => state.user.is_login);
-  const post_list = useSelector((state) => state.post.list);
+  const posts = useSelector((state) => state.post.list);
 
-  // console.log(props.match.params.id);
   const postId = props.match.params.id;
-  // const is_edit = postId ? true : false;
-  // let _post = is_edit ? post_list.find((p) => p.id === postId) : null;
+  const is_edit = postId ? true : false;
+  let _post = is_edit ? posts.find((p) => p.id === postId) : null;
 
   // React.useEffect(() => {
   //   if (is_edit && !_post) {
@@ -29,17 +27,17 @@ const Write = (props) => {
   //   }
   // }, []);
 
-  const [content, setContent] = React.useState();
+  const [content, setContent] = React.useState(_post ? _post.content : "");
   const changeContent = (e) => {
     setContent(e.target.value);
   };
 
   const dispatch = useDispatch();
   const addPost = () => {
-    if (!content || !preview) {
-      window.alert("게시글을 모두 작성해주세요.");
-      return;
-    }
+    // if (!content || !preview) {
+    //   window.alert("게시글을 모두 작성해주세요.");
+    //   return;
+    // }
     dispatch(postActions.addPostDB(content));
   };
 

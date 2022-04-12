@@ -11,7 +11,7 @@ const Post = (props) => {
             <Image
               shape="circle"
               border="2px solid #dddddd"
-              src_01={props.src}
+              src_01={props.userProfile}
             />
             <Text size="18px">{props.userName}</Text>
           </Grid>
@@ -44,14 +44,12 @@ const Post = (props) => {
 };
 
 Post.defaultProps = {
-  userName: "윤지",
-  userProfile:
-    "https://image.msscdn.net/images/style/detail/26197/detail_26197_1_500.jpg",
-  image:
-    "https://image.msscdn.net/images/prd_img/20210522/1962786/detail_1962786_1_500.jpg",
+  userName: "",
+  userProfile: "",
+  image: "",
   content:
     "안녕하세요! 모자랑 니트베스트 코디해봤어요🤟 코디할 바지 추천받아요~~~",
-  date: "5시간 전",
+  date: "",
   is_me: false,
 };
 

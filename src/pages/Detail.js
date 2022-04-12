@@ -1,44 +1,31 @@
 import React from "react";
-import { Grid, Image, Text } from "../components/ui";
-import { Button } from "../components/core";
+import { useDispatch, useSelector } from "react-redux";
+import { actionCreators as postActions } from "../redux/modules/post";
 
-import { Comment, CommentList } from "../components/core";
+import { Grid, Text } from "../components/ui";
+import { Comment, CommentList, Post } from "../components/core";
 
 const Detail = (props) => {
+  const id = props.match.params.id;
+
+  const post_list = useSelector((store) => store.post.list);
+  const post_index = post_list.findIndex((p) => p.id === id);
+  const post = post_list[post_index];
+
+  const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    if (post) {
+      return;
+    }
+    dispatch(postActions.getOnePostDB(id));
+  }, []);
+
   return (
     <React.Fragment>
       <Grid is_flex>
         <Grid>
-          <Grid>
-            <Grid is_flex>
-              <Grid is_flex width="auto">
-                <Image shape="circle" border="2px solid #dddddd" />
-                <Text size="18px">yoonji</Text>
-              </Grid>
-              <Grid is_flex width="auto">
-                <Text textAlign="right">2022-04-04 21:00:00</Text>
-                <Button
-                  padding="8px"
-                  width="auto"
-                  margin="0px 3px"
-                  _onClick={(e) => {}}
-                >
-                  수정
-                </Button>
-                <Button
-                  padding="8px"
-                  width="auto"
-                  margin="0px 3px"
-                  _onClick={(e) => {}}
-                >
-                  삭제
-                </Button>
-              </Grid>
-            </Grid>
-            <Grid>
-              <Image shape="rectangle"></Image>
-            </Grid>
-          </Grid>
+          <Post {...post} />
           <Grid
             scroll
             height="150px"
@@ -46,15 +33,12 @@ const Detail = (props) => {
             margin="10px 0px"
             padding="5px 10px"
           >
-            <Text>
-              안녕하세요! 모자랑 니트베스트 코디해봤어요🤟 코디할 바지
-              추천받아요~~~
-            </Text>
+            <Text>{post?.content}</Text>
           </Grid>
         </Grid>
         <Grid>
-          <Comment postId={1} />
-          <CommentList />
+          <Comment postId={id} />
+          <CommentList postId={id} />
         </Grid>
       </Grid>
     </React.Fragment>

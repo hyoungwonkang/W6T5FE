@@ -28,17 +28,14 @@ const initialState = {
 //미들웨어
 const getCommentDB = (postId) => {
   return async function (dispatch, getState, { history }) {
-    const comment_list = [
-      {
-        content: "",
-      },
-    ];
-    axios
-      // .get("http://52.78.194.238/api/comment/:id")
-      .get("https://reqres.in/api/users?page=2")
-      .then((response) => {
+    await axios
+      .get(`http://52.78.194.238/api/comment/${postId}`)
+      .then((res) => {
+        let comment_list = [];
+        res.data.comment.forEach((comments) => {
+          comment_list.push({ ...comments });
+        });
         dispatch(setComment(postId, comment_list));
-        console.log(response);
       })
       .catch((error) => {
         console.log(error);
@@ -51,14 +48,14 @@ const addCommentDB = (postId, comment) => {
     const _comment = { comment: comment };
     axios({
       method: "post",
-      url: "https://reqres.in/api/register",
+      url: `http://52.78.194.238/api/comment/${postId}`,
       data: {
-        email: "eve.holt@reqres.in",
-        password: "pistol",
+        name: "morpheus",
+        job: "leader",
       },
     })
       .then((response) => {
-        dispatch(addComment(postId, _comment));
+        dispatch(addComment(postId, response.comment));
         console.log(response);
       })
       .catch((error) => {
