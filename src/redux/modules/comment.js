@@ -18,7 +18,7 @@ const addComment = createAction(ADD_COMMENT, (postId, comment) => ({
   comment,
 }));
 
-const loading = createAction(LOADING, (is_loading) => ({ is_loading }));
+// const loading = createAction(LOADING, (is_loading) => ({ is_loading }));
 
 const initialState = {
   list: {},
@@ -45,15 +45,8 @@ const getCommentDB = (postId) => {
 
 const addCommentDB = (postId, comment) => {
   return async function (dispatch, getState, { history }) {
-    const _comment = { comment: comment };
-    axios({
-      method: "post",
-      url: `http://52.78.194.238/api/comment/${postId}`,
-      data: {
-        name: "morpheus",
-        job: "leader",
-      },
-    })
+    await axios
+      .post(`http://52.78.194.238/api/comment/${postId}`)
       .then((response) => {
         dispatch(addComment(postId, response.comment));
         console.log(response);

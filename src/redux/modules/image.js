@@ -17,21 +17,6 @@ const initialState = {
   preview: null,
 };
 
-// //미들웨어
-// const uploadImageFB = (image) => {
-//   return function (dispatch, getState, { history }) {
-//     dispatch(uploading(true));
-//     const _upload = storage.ref(`images/${image.name}`).put(image);
-//     _upload.then((snapshot) => {
-//       console.log(snapshot);
-//       snapshot.ref.getDownloadURL().then((url) => {
-//         console.log(url);
-//         dispatch(uploadImage(url));
-//       });
-//     });
-//   };
-// };
-
 //리듀서
 export default handleActions(
   {

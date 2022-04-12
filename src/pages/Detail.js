@@ -6,18 +6,12 @@ import { Grid, Text } from "../components/ui";
 import { Comment, CommentList, Post } from "../components/core";
 
 const Detail = (props) => {
-  const id = props.match.params.id;
-
-  const post_list = useSelector((store) => store.post.list);
-  const post_index = post_list.findIndex((p) => p.id === id);
-  const post = post_list[post_index];
-
   const dispatch = useDispatch();
 
+  const id = props.match.params.id;
+  const post = useSelector((store) => store.post.detail);
+
   React.useEffect(() => {
-    if (post) {
-      return;
-    }
     dispatch(postActions.getOnePostDB(id));
   }, []);
 

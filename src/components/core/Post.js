@@ -47,8 +47,7 @@ Post.defaultProps = {
   userName: "",
   userProfile: "",
   image: "",
-  content:
-    "안녕하세요! 모자랑 니트베스트 코디해봤어요🤟 코디할 바지 추천받아요~~~",
+  content: "",
   date: "",
   is_me: false,
 };

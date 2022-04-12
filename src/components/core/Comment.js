@@ -15,7 +15,7 @@ const Comment = (props) => {
   };
   const write = () => {
     dispatch(commentActions.addCommentDB(postId, comment));
-    setCommentText(""); //작성후 텍스트를 제거해줌
+    setCommentText("");
   };
   return (
     <React.Fragment>

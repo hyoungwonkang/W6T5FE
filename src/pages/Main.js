@@ -8,20 +8,16 @@ import { Button, Post } from "../components/core";
 
 const Main = (props) => {
   const dispatch = useDispatch();
-  // const post_list = useSelector((state) => state.post.list);
+
   const posts = useSelector((state) => state.post.list);
+
   React.useEffect(() => {
     if (posts.length < 2) {
-      //getOnePostFB로 호출해서 이미 한개가 존재하니까
       dispatch(postActions.getPostDB());
       return;
     }
-
-    // if ((posts.length = 0)) {
-    //   return;
-    // }
-    // dispatch(postActions.getPostDB());
   }, []);
+
   return (
     <React.Fragment>
       <Grid right>

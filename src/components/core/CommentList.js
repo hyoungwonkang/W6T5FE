@@ -38,15 +38,11 @@ CommentList.defaultProps = {
 export default CommentList;
 
 const CommentItem = (props) => {
-  const { userName, date, comment } = props;
+  const { userName, date, comment, image } = props;
   return (
     <Grid is_flex>
       <Grid width="auto" center>
-        <Image
-          shape="circle"
-          border="2px solid #dddddd"
-          src_01={props.userProfile}
-        />
+        <Image shape="circle" border="2px solid #dddddd" src_01={image} />
         <Text>{userName}</Text>
       </Grid>
       <Grid is_flex margin="0px 0px 0px 15px">
@@ -70,4 +66,5 @@ CommentItem.defaultProps = {
   postId: "",
   comment: "",
   date: "",
+  image: "",
 };
