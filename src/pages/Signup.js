@@ -12,14 +12,15 @@ const Signup = () => {
   const dispatch = useDispatch();
 
   const [userId, setUserId] = React.useState('');
+  const [userName, setUserName] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [pwConfirm, setpwConfirm] = React.useState('');
-  const [userName, setUserName] = React.useState('');
   const [gender, setGender] = React.useState(true);
 
   const changeCheck = () => {
     setGender((check: boolean) => !check);
   };
+
   const signup = (e) => {
     e.preventDefault();
 
@@ -97,7 +98,7 @@ const Signup = () => {
           />
         </Grid>
         <Grid>
-          {gender && <h1>hihi</h1>}
+          {gender && <Text>성별</Text>}
           <button onClick={changeCheck}>Change!</button>
         </Grid>
 

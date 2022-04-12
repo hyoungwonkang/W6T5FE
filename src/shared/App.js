@@ -3,6 +3,9 @@ import { Route } from 'react-router-dom';
 
 import { ConnectedRouter } from 'connected-react-router';
 import { history } from '../redux/configureStore';
+import { actionCreators as userActions } from '../redux/modules/user';
+import { useDispatch } from 'react-redux';
+import { getCookie } from './Cookie';
 
 import { Grid, Image } from '../components/ui';
 import { Header } from '../components/core';
@@ -12,6 +15,16 @@ import Signup from '../pages/Signup';
 import Main from '../pages/Main';
 
 function App() {
+  const dispatch = useDispatch();
+
+  const token = getCookie('is_login');
+
+  React.useEffect(() => {
+    if (token) {
+      dispatch(userActions.loginCheckM());
+    }
+  }, []);
+
   return (
     <React.Fragment>
       <Header />
