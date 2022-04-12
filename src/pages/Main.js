@@ -1,79 +1,61 @@
 import React from 'react';
-import { Grid, Text, Image } from '../components/ui';
-import { Button, Upload } from '../components/core';
-import { useHistory } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { history } from '../redux/configureStore';
+import { actionCreators as postActions } from '../redux/modules/post';
+
+import { Grid, Text } from '../components/ui';
+import { Button, Post } from '../components/core';
+
+import user from '../redux/modules/user';
 
 const Main = (props) => {
-  const history = useHistory;
+  const dispatch = useDispatch();
+  // const post_list = useSelector((state) => state.post.list);
+  const posts = useSelector((state) => state.post.list);
+  const user = useSelector((state) => state.user.userInfo);
+  React.useEffect(() => {
+    if (posts.length < 2) {
+      //getOnePostFB로 호출해서 이미 한개가 존재하니까
+      dispatch(postActions.getPostDB());
+      return;
+    }
 
+    // if ((posts.length = 0)) {
+    //   return;
+    // }
+    // dispatch(postActions.getPostDB());
+  }, []);
   return (
     <React.Fragment>
-      <Grid padding='20px 0px'>
-        <Grid>
-          <Grid is_flex padding='4px 16px'>
-            <Button
-              text='업로드'
-              _onClick={() => {
-                history.push('/Write');
-              }}
-            ></Button>
-          </Grid>
-          <Text>님 안녕하세요!</Text>
-
-          <Grid is_flex padding='4px 16px'>
-            <Grid padding='4px 16px'>
-              <Grid padding='0px 16px' bg={'#EFF6FF'}>
-                <Image
-                  width='50vh'
-                  shape='circle'
-                  src='https://t1.daumcdn.net/cfile/tistory/997E5C3C5BA1E68137'
-                />
-                <Text bold size>
-                  luke
-                </Text>
-              </Grid>
-              <Image
-                shape='rectangle'
-                src='https://www.bigjungbo.com/files/attach/images/163/952/878/009/70954840c442cac5c338e2e9a7ed1ce7.jpeg'
-              />
-            </Grid>
-
-            <Grid padding='4px 16px'>
-              <Grid padding='0px 16px' bg={'#EFF6FF'}>
-                <Image
-                  width='50vh'
-                  shape='circle'
-                  src='https://t1.daumcdn.net/cfile/tistory/997E5C3C5BA1E68137'
-                />
-                <Text bold size>
-                  luke
-                </Text>
-              </Grid>
-              <Image
-                shape='rectangle'
-                src='https://www.bigjungbo.com/files/attach/images/163/952/878/009/70954840c442cac5c338e2e9a7ed1ce7.jpeg'
-              />
-            </Grid>
-
-            <Grid padding='4px 16px'>
-              <Grid padding='0px 16px' bg={'#EFF6FF'}>
-                <Image
-                  width='50vh'
-                  shape='circle'
-                  src='https://t1.daumcdn.net/cfile/tistory/997E5C3C5BA1E68137'
-                />
-                <Text bold size>
-                  luke
-                </Text>
-              </Grid>
-              <Image
-                shape='rectangle'
-                src='https://www.bigjungbo.com/files/attach/images/163/952/878/009/70954840c442cac5c338e2e9a7ed1ce7.jpeg'
-              />
-            </Grid>
-          </Grid>
-        </Grid>
+      <Grid right>
+        <Button
+          width='auto'
+          margin='15px 5px'
+          padding='10px 20px'
+          _onClick={() => {
+            history.push('/postWrite/:id');
+          }}
+        >
+          Upload
+        </Button>
+        <Text display='inline-block'>{user.userId}님 안녕하세요</Text>
       </Grid>
+      {posts.map((v, i) => {
+        return (
+          // <Grid is_flex margin="50px 0px 0px 0px" key={(v, i)}>
+          <Grid
+            key={(v, i)}
+            is_flex
+            margin='0px 10px'
+            _onClick={() => {
+              history.push(`/detail/${v.id}`);
+            }}
+          >
+            <Post {...v} />
+          </Grid>
+          // </Grid>
+        );
+      })}
     </React.Fragment>
   );
 };

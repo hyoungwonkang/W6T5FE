@@ -2,27 +2,36 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Text = (props) => {
-  const { bold, color, size, children } = props;
-  const styles = { bold: bold, color: color, size: size };
-  return (
-    <P {...styles}>
-      {' '}
-      {/*어떤게 들어가 있나 미리 끼얹어준다*/}
-      {children}
-    </P>
-  );
+  const { children, bold, color, size, margin, textAlign, display } = props;
+  const styles = {
+    bold: bold,
+    color: color,
+    size: size,
+    margin: margin,
+    textAlign: textAlign,
+    display: display,
+  };
+
+  return <P {...styles}>{children}</P>;
 };
-//최소한의 정보 보내줌
+
 Text.defaultProps = {
   children: null,
   bold: false,
-  color: '#222831',
+  color: '#67686a',
   size: '14px',
+  margin: '0px',
+  textAlign: false,
+  display: '',
 };
 
 const P = styled.p`
+  display: ${(props) => props.display};
   color: ${(props) => props.color};
   font-size: ${(props) => props.size};
   font-weight: ${(props) => (props.bold ? '600' : '400')};
+  margin: ${(props) => props.margin};
+  text-align: ${(props) => props.textAlign};
 `;
+
 export default Text;

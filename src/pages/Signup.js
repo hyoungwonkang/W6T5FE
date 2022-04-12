@@ -102,7 +102,7 @@ const Signup = () => {
           <button onClick={changeCheck}>Change!</button>
         </Grid>
 
-        <Button text='회원가입하기' _onClick={signup}></Button>
+        <Button text='회원가입하기' _onClick={signup.profile}></Button>
       </Grid>
     </React.Fragment>
   );

@@ -3,14 +3,14 @@ import { produce } from 'immer';
 import { createAction, handleActions } from 'redux-actions';
 
 // actions
-// const LOG_OUT = 'LOG_OUT';
+const LOG_OUT = 'LOG_OUT';
 const GET_USER = 'GET_USER';
 const SET_USER = 'SET_USER';
 
 // action creators
 const setUser = createAction(SET_USER, (user) => ({ user }));
 const getUser = createAction(GET_USER, (user) => ({ user }));
-// const logOut = createAction(LOG_OUT, () => ({}));
+const logOut = createAction(LOG_OUT, (user) => ({ user }));
 
 // initailState
 const initialState = {
@@ -61,8 +61,8 @@ const loginM = (userId, password) => {
         localStorage.setItem('token', res.data.token);
         console.log('로그인 성공!');
         alert('로그인 성공!');
-        // history.replace("/");
-        // window.location.reload();
+        history.replace('/home');
+        window.location.reload();
       })
       .catch((err) => {
         console.log(err);
@@ -92,6 +92,15 @@ const loginCheckM = () => {
       });
   };
 };
+
+const logoutM = () => {
+  return (dispatch, getState, { history }) => {
+    console.log('로그아웃 되었습니다!');
+    localStorage.removeItem('token');
+    dispatch(logOut());
+  };
+};
+
 // reducer
 export default handleActions(
   {
@@ -100,14 +109,12 @@ export default handleActions(
         draft.userInfo = action.payload.user;
         draft.is_login = true;
       }),
-    // [LOG_OUT]: (state, action) =>
-    //   produce(state, (draft) => {
-    //     deleteCookie('is_login');
-    //     draft.user = null;
-    //     draft.is_login = false;
-    //   }),
-
     [GET_USER]: (state, action) => produce(state, (draft) => {}),
+    [LOG_OUT]: (state, action) =>
+      produce(state, (draft) => {
+        draft.user = null;
+        draft.is_login = false;
+      }),
   },
   initialState
 );
@@ -118,6 +125,7 @@ const actionCreators = {
   loginM,
   loginCheckM,
   getUser,
+  logoutM,
 };
 
 export { actionCreators };
