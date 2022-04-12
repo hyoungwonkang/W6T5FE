@@ -2,9 +2,6 @@ import axios from 'axios';
 import { produce } from 'immer';
 import { createAction, handleActions } from 'redux-actions';
 
-import { setCookie, getCookie, deleteCookie } from '../../shared/Cookie';
-// import Request from '../../shared/Request';
-
 // actions
 // const LOG_OUT = 'LOG_OUT';
 const GET_USER = 'GET_USER';
@@ -38,7 +35,6 @@ const signupM = (userId, userName, password, pwConfirm, gender) => {
       // password: 'pistol',
     };
     console.log('회원 가입 중입니다.');
-    // await Request
 
     axios
       .post('http://52.78.194.238/api/signup', userInfo)
@@ -62,18 +58,11 @@ const loginM = (userId, password) => {
       })
       .then((res) => {
         console.log(res, '로그인 중입니다.');
-        dispatch(
-          setUser({
-            userId: res.data.userId,
-            userName: res.data.userName,
-          })
-        );
-        const accessToken = res.data.token;
-        console.log(accessToken);
-        // console.log(accessToken.userId);
-        //쿠키에 토큰 저장
-        setCookie('is_login', `${accessToken}`);
-        // document.location.href = '/';
+        localStorage.setItem('token', res.data.token);
+        console.log('로그인 성공!');
+        alert('로그인 성공!');
+        // history.replace("/");
+        // window.location.reload();
       })
       .catch((err) => {
         console.log(err);
@@ -81,33 +70,29 @@ const loginM = (userId, password) => {
       });
   };
 };
-
-const loginCheckDB = () => {
+// 로그인 체크를 해서 새로고침하면 데이터가 날아가버리는 리덕스에 다시 데이터를 집어 넣는다.
+const loginCheckM = () => {
   return (dispatch, getState, { history }) => {
-    const token = getCookie('is_login');
-    console.log(token);
-    axios({
-      method: 'post',
-      url: 'http://13.125.249.241/user/check',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    axios
+      .post('http://52.78.194.238/api/loginInfo', {
+        //localStorage에 있는 토큰을 get함
+        token: localStorage.getItem('token'),
+      })
       .then((res) => {
-        console.log(res.data);
+        console.log(res);
         dispatch(
           setUser({
-            userId: res.data.userId,
-            userName: res.data.userName,
+            userId: res.data.userInfo.userId,
+            userName: res.data.userInfo.userName,
           })
         );
       })
       .catch((error) => {
-        console.log(error.code, error.message);
+        console.log(error);
       });
   };
 };
-//reducer
+// reducer
 export default handleActions(
   {
     [SET_USER]: (state, action) =>
@@ -115,18 +100,24 @@ export default handleActions(
         draft.userInfo = action.payload.user;
         draft.is_login = true;
       }),
+    // [LOG_OUT]: (state, action) =>
+    //   produce(state, (draft) => {
+    //     deleteCookie('is_login');
+    //     draft.user = null;
+    //     draft.is_login = false;
+    //   }),
 
     [GET_USER]: (state, action) => produce(state, (draft) => {}),
   },
   initialState
 );
 
+//action creator export
 const actionCreators = {
   signupM,
-  setUser,
-  getUser,
   loginM,
-  // logIn,
+  loginCheckM,
+  getUser,
 };
 
 export { actionCreators };

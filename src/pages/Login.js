@@ -56,7 +56,7 @@ const Login = (props) => {
             text='로그인하기'
             _onClick={() => {
               login();
-              history.push('/home');
+              // history.push('/home');
             }}
           ></Button>
 

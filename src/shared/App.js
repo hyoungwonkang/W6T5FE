@@ -1,11 +1,10 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-
 import { ConnectedRouter } from 'connected-react-router';
+
 import { history } from '../redux/configureStore';
 import { actionCreators as userActions } from '../redux/modules/user';
 import { useDispatch } from 'react-redux';
-import { getCookie } from './Cookie';
 
 import { Grid, Image } from '../components/ui';
 import { Header } from '../components/core';
@@ -17,12 +16,13 @@ import Main from '../pages/Main';
 function App() {
   const dispatch = useDispatch();
 
-  const token = getCookie('is_login');
+  // const token = getCookie('is_login');
 
   React.useEffect(() => {
-    if (token) {
+    if (localStorage.getItem('token')) {
       dispatch(userActions.loginCheckM());
     }
+    console.log('로그인 상태 유지!');
   }, []);
 
   return (
