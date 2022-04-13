@@ -22,14 +22,22 @@ const initialState = {
 };
 
 // middleware actions
-const signupM = (userId, userName, password, pwConfirm, gender) => {
+const signupM = (
+  userId,
+  userName,
+  password,
+  pwConfirm,
+  userProfile,
+  gender
+) => {
   return (dispatch, getState, { history }) => {
-    console.log(userId, userName, password, pwConfirm, gender);
+    console.log(userId, userName, password, pwConfirm, userProfile, gender);
     const userInfo = {
       userId: userId,
       userName: userName,
       password: password,
       pwConfirm: pwConfirm,
+      userProfile: userProfile,
       gender: gender,
       // email: 'eve.holt@reqres.in',
       // password: 'pistol',

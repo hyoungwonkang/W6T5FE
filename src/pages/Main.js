@@ -6,8 +6,6 @@ import { actionCreators as postActions } from '../redux/modules/post';
 import { Grid, Text } from '../components/ui';
 import { Button, Post } from '../components/core';
 
-import user from '../redux/modules/user';
-
 const Main = (props) => {
   const dispatch = useDispatch();
   // const post_list = useSelector((state) => state.post.list);
@@ -38,7 +36,7 @@ const Main = (props) => {
         >
           Upload
         </Button>
-        <Text display='inline-block'>{user.userId}님 안녕하세요</Text>
+        <Text display='inline-block'>{user.userName}님 안녕하세요</Text>
       </Grid>
       {posts.map((v, i) => {
         return (
