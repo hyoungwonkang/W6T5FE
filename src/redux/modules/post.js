@@ -1,21 +1,23 @@
 import axios from 'axios';
 import { createAction, handleActions } from 'redux-actions';
-import { actionCreators as imageActions } from './image';
 
 import { produce } from 'immer';
 import moment from 'moment';
 
 //액션타입
-const SET_POST = 'SET_POST'; //가져온 게시물을 넣어주는 애
+const GET_POST = 'GET_POST'; //가져온 게시물을 넣어주는 애
+const GETONE_POST = 'GETONE_POST';
 const ADD_POST = 'ADD_POST';
 
 //액션생성
-const setPost = createAction(SET_POST, (posts) => ({ posts }));
+const getPost = createAction(GET_POST, (posts) => ({ posts }));
+const getOnePost = createAction(GETONE_POST, (post) => ({ post }));
 const addPost = createAction(ADD_POST, (post) => ({ post }));
 
 //초기값
 const initialState = {
   list: [],
+  detail: [],
   // paging: { star: null, next: null, size: 3 },
 };
 const initialPost = {
@@ -27,46 +29,67 @@ const initialPost = {
 //미들웨어
 const getPostDB = () => {
   return async function (dispatch, getState, { history }) {
-    await axios.get('http://52.78.194.238/api/postGet').then((res) => {
-      console.log(res.data);
-      let _posts = [];
-      res.data.posts.forEach((posts) => {
-        _posts.push({ id: posts.id, ...posts });
+    await axios
+      // .orderBy("date", "desc")
+      .get('http://52.78.194.238/api/postGet')
+      .then((res) => {
+        console.log(res.data);
+        let _posts = [];
+        res.data.posts.forEach((posts) => {
+          _posts.push({ id: posts.id, ...posts });
+        });
+        dispatch(getPost(_posts));
+        console.log('확인');
+      })
+      .catch((error) => {
+        console.log(error);
       });
-      dispatch(setPost(_posts));
-    });
   };
 };
 
 const getOnePostDB = (id) => {
   return async function (dispatch, getState, { history }) {
-    await axios.get(`http://52.78.194.238/api/detail/${id}`).then((res) => {
-      console.log(res.data);
-      let post = res.data.posts;
-      dispatch(setPost([post]));
-    });
+    await axios
+      .get(`http://52.78.194.238/api/detail/${id}`)
+      .then((res) => {
+        console.log(res.data);
+        let post = res.data.detail;
+        console.log(post);
+        dispatch(getOnePost(post));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 };
 
-const addPostDB = (content = '') => {
-  return function (dispatch, getState, { history }) {
-    const _post = {
+const addPostDB = (formData) => {
+  return async function (dispatch, getState, { history }) {
+    let _post = {
       ...initialPost,
-      content: content,
+      formData,
       date: moment().format('YYYY-MM-DD kk:mm:ss'),
     };
     console.log(_post);
-    axios
-      .post('http://52.78.194.238/api/postWrite')
-      .then((doc) => {
+    await axios({
+      method: 'post',
+      url: 'http://52.78.194.238/api/postWrite',
+      data: formData,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    })
+      .then((res) => {
+        console.log(res);
         dispatch(addPost(_post));
-        history.replace('/main');
-
         // dispatch(imageActions.setPreview(null));
+
+        history.push('/main');
       })
-      .catch((err) => {
+      .catch((error) => {
         window.alert('포스트 작성에 문제가 있습니다.');
-        console.log('게시물 작성이 실패했습니다.', err);
+        console.log('게시물 작성이 실패했습니다.', error);
       });
   };
 };
@@ -74,7 +97,7 @@ const addPostDB = (content = '') => {
 //리듀서
 export default handleActions(
   {
-    [SET_POST]: (state, action) =>
+    [GET_POST]: (state, action) =>
       produce(state, (draft) => {
         draft.list = draft.list.reduce((acc, cur) => {
           if (acc.findIndex((a) => a.id === cur.id) === -1) {
@@ -84,10 +107,11 @@ export default handleActions(
             return acc;
           }
         }, []);
-        if (action.payload.paging) {
-          draft.paging = action.payload.paging;
-        }
         draft.list = action.payload.posts;
+      }),
+    [GETONE_POST]: (state, action) =>
+      produce(state, (draft) => {
+        draft.detail = action.payload.post;
       }),
     [ADD_POST]: (state, action) =>
       produce(state, (draft) => {
@@ -98,7 +122,8 @@ export default handleActions(
 );
 
 const actionCreators = {
-  setPost,
+  getPost,
+  getOnePost,
   addPost,
   getPostDB,
   getOnePostDB,

@@ -6,31 +6,21 @@ import produce from 'immer';
 const UPLOADING = 'UPLOADING';
 const UPLOAD_IMAGE = 'UPLOAD_IMAGE';
 const SET_PREVIEW = 'SET_PREVIEW';
+const UPLOAD_PROFILE = 'UPLOAD_PROFILE';
 
 const uploading = createAction(UPLOADING, (uploading) => ({ uploading }));
 const uploadImage = createAction(UPLOAD_IMAGE, (image) => ({ image }));
 const setPreview = createAction(SET_PREVIEW, (preview) => ({ preview }));
+const uploadProfile = createAction(UPLOAD_PROFILE, (userProfile) => ({
+  userProfile,
+}));
 
 const initialState = {
   image: '',
   uploading: false,
   preview: null,
+  userProfile: '',
 };
-
-// //미들웨어
-// const uploadImageFB = (image) => {
-//   return function (dispatch, getState, { history }) {
-//     dispatch(uploading(true));
-//     const _upload = storage.ref(`images/${image.name}`).put(image);
-//     _upload.then((snapshot) => {
-//       console.log(snapshot);
-//       snapshot.ref.getDownloadURL().then((url) => {
-//         console.log(url);
-//         dispatch(uploadImage(url));
-//       });
-//     });
-//   };
-// };
 
 //리듀서
 export default handleActions(
@@ -47,6 +37,11 @@ export default handleActions(
     [SET_PREVIEW]: (state, action) =>
       produce(state, (draft) => {
         draft.preview = action.payload.preview;
+      }),
+    [UPLOAD_PROFILE]: (state, action) =>
+      produce(state, (draft) => {
+        draft.userProfile = action.payload.userProfile;
+        draft.uploading = false;
       }),
   },
   initialState
