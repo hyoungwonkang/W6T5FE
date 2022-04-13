@@ -12,6 +12,7 @@ const Button = (props) => {
     no_bg,
     padding,
     float,
+    mycomment,
   } = props;
 
   if (is_float) {
@@ -58,6 +59,7 @@ Button.defaultProps = {
   margin: "0px",
   padding: "12px 0px",
   float: false,
+  mycomment: false,
 };
 
 const ElButton = styled.button`

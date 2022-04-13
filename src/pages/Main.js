@@ -12,30 +12,29 @@ const Main = (props) => {
 
   const posts = useSelector((state) => state.post.list);
   const user = useSelector((state) => state.user.userInfo);
-  console.log(user);
 
   React.useEffect(() => {
-    if (posts.length < 2) {
-      dispatch(postActions.getPostDB());
-      return;
-    }
+    dispatch(postActions.getPostDB());
   }, []);
 
   return (
     <React.Fragment>
-      <Grid right>
-        <Button
-          width="auto"
-          margin="15px 5px"
-          padding="10px 20px"
-          _onClick={() => {
-            history.push("/postWrite");
-          }}
-        >
-          Upload
-        </Button>
-        <Text display="inline-block">{user.userName}님 안녕하세요</Text>
-      </Grid>
+      {user.userId && (
+        <Grid right>
+          <Button
+            width="auto"
+            margin="15px 5px"
+            padding="10px 20px"
+            _onClick={() => {
+              history.push("/postWrite");
+            }}
+          >
+            Upload
+          </Button>
+          <Text display="inline-block">{user.userName}님 안녕하세요</Text>
+        </Grid>
+      )}
+
       {posts.map((v, i) => {
         if (v.userId === user.userId) {
           return (

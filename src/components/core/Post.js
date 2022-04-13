@@ -27,7 +27,10 @@ const Post = (props) => {
                 padding="8px"
                 width="auto"
                 margin="0px 3px"
-                _onClick={(e) => {}}
+                _onClick={(e) => {
+                  e.stopPropagation();
+                  history.push(`/postWrite/${props.id}`);
+                }}
               >
                 수정
               </Button>
@@ -37,7 +40,12 @@ const Post = (props) => {
                 padding="8px"
                 width="auto"
                 margin="0px 3px"
-                _onClick={(e) => {}}
+                _onClick={(e) => {
+                  e.stopPropagation();
+                  if (window.confirm("게시물을 삭제하시겠어요?") === true) {
+                    dispatch(postActions.deletePostDB(props.id));
+                  }
+                }}
               >
                 삭제
               </Button>

@@ -2,19 +2,19 @@ import React from "react";
 import { Grid, Text, Image } from "../ui";
 import { Button } from "../core";
 
+import { history } from "../../redux/configureStore";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as commentActions } from "../../redux/modules/comment";
 
 const CommentList = (props) => {
   const dispatch = useDispatch();
   const comment_list = useSelector((state) => state.comment.list);
+  const user = useSelector((state) => state.user.userInfo);
   const { postId } = props;
 
   React.useEffect(() => {
-    if (!comment_list[postId]) {
-      dispatch(commentActions.getCommentDB(postId));
-    }
-  }, []);
+    dispatch(commentActions.getCommentDB(postId));
+  }, [postId]);
 
   if (!comment_list[postId] || !postId) {
     return null;
@@ -38,7 +38,12 @@ CommentList.defaultProps = {
 export default CommentList;
 
 const CommentItem = (props) => {
-  const { userName, date, comment, image } = props;
+  const { userName, date, comment, image, userId } = props;
+  const user = useSelector((state) => state.user.userInfo);
+  const mycomment = user.userId === userId ? true : false;
+
+  const dispatch = useDispatch();
+
   return (
     <Grid is_flex>
       <Grid width="auto" center>
@@ -49,12 +54,22 @@ const CommentItem = (props) => {
         <Text margin="0px 10px 0px 5px">{comment}</Text>
         <Text>{date}</Text>
       </Grid>
-      <Button width="auto" padding="8px" margin="0px 3px">
-        M
-      </Button>
-      <Button width="auto" padding="8px" margin="0px 3px">
-        D
-      </Button>
+      {mycomment === true && (
+        <Button
+          width="auto"
+          padding="8px"
+          margin="0px 3px"
+          _onClick={(e) => {
+            e.stopPropagation();
+            if (window.confirm("댓글을 삭제하시겠어요?") === true) {
+              console.log(props.id);
+              dispatch(commentActions.deleteCommentDB(props.id));
+            }
+          }}
+        >
+          X
+        </Button>
+      )}
     </Grid>
   );
 };

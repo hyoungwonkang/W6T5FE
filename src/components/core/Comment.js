@@ -5,11 +5,12 @@ import { Grid } from "../ui";
 import { actionCreators as commentActions } from "../../redux/modules/comment";
 import { actionCreators as userActions } from "../../redux/modules/user";
 import { useDispatch, useSelector } from "react-redux";
+import { history } from "../../redux/configureStore";
 
 const Comment = (props) => {
   const dispatch = useDispatch();
-  const [comment, setCommentText] = React.useState();
 
+  const [comment, setCommentText] = React.useState();
   const { postId } = props;
   const onChange = (e) => {
     setCommentText(e.target.value);
@@ -18,9 +19,12 @@ const Comment = (props) => {
   const user = useSelector((state) => state.user);
   const userId = user.userInfo.userId;
 
-  // console.log(post);
-
   const write = () => {
+    if (!userId) {
+      alert("로그인이 필요합니다.");
+      history.replace("/login");
+      return;
+    }
     dispatch(commentActions.addCommentDB(userId, postId, comment));
     setCommentText("");
   };

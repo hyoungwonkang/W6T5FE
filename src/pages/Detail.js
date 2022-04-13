@@ -10,6 +10,7 @@ const Detail = (props) => {
 
   const id = props.match.params.id;
   const post = useSelector((store) => store.post.detail);
+  const user = useSelector((state) => state.user);
 
   React.useEffect(() => {
     dispatch(postActions.getOnePostDB(id));
@@ -19,7 +20,9 @@ const Detail = (props) => {
     <React.Fragment>
       <Grid is_flex>
         <Grid>
-          <Post {...post} />
+          {post && (
+            <Post {...post} is_me={post.userId === user.userInfo.userId} />
+          )}
           <Grid
             scroll
             height="150px"

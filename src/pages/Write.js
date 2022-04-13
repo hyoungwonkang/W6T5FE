@@ -71,20 +71,29 @@ const Write = (props) => {
     formData.append("image", file);
     formData.append("content", content);
 
-    return (
-      dispatch(postActions.addPostDB(formData)),
-      // history.push("/main"),
-      console.log(formData)
-    );
+    return dispatch(postActions.addPostDB(formData));
   };
 
   const preview = useSelector((state) => state.image.preview);
+
+  const editPost = () => {
+    const file = fileInput.current.files[0];
+
+    const formData = new FormData();
+
+    formData.append("userId", userId);
+    formData.append("userName", userName);
+    formData.append("title", title);
+    formData.append("image", file);
+    formData.append("content", content);
+    return dispatch(postActions.editPostDB(postId, formData));
+  };
 
   return (
     <React.Fragment>
       <Grid padding="16px 10px">
         <Text size="20px" bold width="auto">
-          게시물 작성
+          {is_edit ? "게시글 수정" : "게시글 작성"}
         </Text>
         <input
           type="file"
@@ -111,7 +120,7 @@ const Write = (props) => {
           _onChange={changeTitle}
           multiLine
           rows
-          label="게시글 내용"
+          label="게시글 제목"
         />
       </Grid>
       <Grid padding="16px">
@@ -124,7 +133,11 @@ const Write = (props) => {
         />
       </Grid>
       <Grid padding="16px">
-        <Button _onClick={addPost} text="작성하기"></Button>
+        {is_edit ? (
+          <Button _onClick={editPost} text="수정하기"></Button>
+        ) : (
+          <Button _onClick={addPost} text="작성하기"></Button>
+        )}
       </Grid>
     </React.Fragment>
   );
