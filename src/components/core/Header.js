@@ -11,6 +11,7 @@ import { history } from "../../redux/configureStore";
 
 const Header = (props) => {
   const dispatch = useDispatch();
+  const is_login = useSelector((state) => state.user.is_login);
 
   return (
     <React.Fragment>

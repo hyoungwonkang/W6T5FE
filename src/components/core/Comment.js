@@ -3,7 +3,8 @@ import { Input, Button } from "./index";
 import { Grid } from "../ui";
 
 import { actionCreators as commentActions } from "../../redux/modules/comment";
-import { useDispatch } from "react-redux";
+import { actionCreators as userActions } from "../../redux/modules/user";
+import { useDispatch, useSelector } from "react-redux";
 
 const Comment = (props) => {
   const dispatch = useDispatch();
@@ -13,8 +14,14 @@ const Comment = (props) => {
   const onChange = (e) => {
     setCommentText(e.target.value);
   };
+
+  const user = useSelector((state) => state.user);
+  const userId = user.userInfo.userId;
+
+  // console.log(post);
+
   const write = () => {
-    dispatch(commentActions.addCommentDB(postId, comment));
+    dispatch(commentActions.addCommentDB(userId, postId, comment));
     setCommentText("");
   };
   return (

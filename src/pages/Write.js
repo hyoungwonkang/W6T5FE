@@ -9,6 +9,7 @@ import { actionCreators as imageActions } from "../redux/modules/image";
 const Write = (props) => {
   const { history } = props;
   const posts = useSelector((state) => state.post.list);
+  const users = useSelector((state) => state.user.userInfo);
 
   const postId = props.match.params.id;
   const is_edit = postId ? true : false;
@@ -19,27 +20,25 @@ const Write = (props) => {
     const reader = new FileReader();
     const file = fileInput.current.files[0];
 
-    reader.readAsDataURL(file); //파일 내용을 읽어올 수 있음
+    reader.readAsDataURL(file);
 
     reader.onloadend = () => {
-      //읽기가 끝나면 실행
-      // console.log(reader.result);
       dispatch(imageActions.setPreview(reader.result));
     };
   };
 
-  // React.useEffect(() => {
-  //   if (is_edit && !_post) {
-  //     console.log("게시물 정보가 없습니다.");
-  //     history.goBack();
-  //     return;
-  //   }
-  //   if (is_edit) {
-  //     dispatch(imageActions.setPreview(_post.image));
-  //   } else {
-  //     dispatch(imageActions.setPreview(null));
-  //   }
-  // }, []);
+  React.useEffect(() => {
+    if (is_edit && !_post) {
+      console.log("게시물 정보가 없습니다.");
+      history.goBack();
+      return;
+    }
+    if (is_edit) {
+      dispatch(imageActions.setPreview(_post.image));
+    } else {
+      dispatch(imageActions.setPreview(null));
+    }
+  }, []);
 
   const [title, setTitle] = React.useState(_post ? _post.title : "");
   const [content, setContent] = React.useState(_post ? _post.content : "");
@@ -53,6 +52,9 @@ const Write = (props) => {
   const dispatch = useDispatch();
   const is_uploading = useSelector((state) => state.image.uploading);
 
+  const userId = users.userId;
+  const userName = users.userName;
+
   const addPost = () => {
     if (!fileInput.current || fileInput.current.files.length === 0) {
       window.alert("게시글을 모두 작성해주세요.");
@@ -60,18 +62,18 @@ const Write = (props) => {
     }
 
     const file = fileInput.current.files[0];
-    console.log(file);
 
     const formData = new FormData();
 
-    formData.append("image", file);
+    formData.append("userId", userId);
+    formData.append("userName", userName);
     formData.append("title", title);
+    formData.append("image", file);
     formData.append("content", content);
-    // console.log("formData", formData);
 
     return (
       dispatch(postActions.addPostDB(formData)),
-      history.push("/main"),
+      // history.push("/main"),
       console.log(formData)
     );
   };

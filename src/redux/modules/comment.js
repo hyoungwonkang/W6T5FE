@@ -45,11 +45,15 @@ const getCommentDB = (postId) => {
 
 const addCommentDB = (postId, comment) => {
   return async function (dispatch, getState, { history }) {
-    await axios
-      .post(`http://52.78.194.238/api/comment/${postId}`)
-      .then((response) => {
-        dispatch(addComment(postId, response.comment));
-        console.log(response);
+    let comment = await axios
+      .post(`http://52.78.194.238/api/comment/${postId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      .then((res) => {
+        dispatch(addComment(postId, res.comment));
+        console.log(res);
       })
       .catch((error) => {
         console.log(error);

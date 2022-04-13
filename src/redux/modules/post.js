@@ -1,7 +1,5 @@
 import axios from "axios";
 import { createAction, handleActions } from "redux-actions";
-import { actionCreators as imageActions } from "./image";
-import { getCookie } from "../../shared/Cookie";
 
 import { produce } from "immer";
 import moment from "moment";
@@ -32,6 +30,7 @@ const initialPost = {
 const getPostDB = () => {
   return async function (dispatch, getState, { history }) {
     await axios
+      // .orderBy("date", "desc")
       .get("http://52.78.194.238/api/postGet")
       .then((res) => {
         // console.log(res.data);
@@ -40,6 +39,7 @@ const getPostDB = () => {
           _posts.push({ id: posts.id, ...posts });
         });
         dispatch(getPost(_posts));
+        console.log("확인");
       })
       .catch((error) => {
         console.log(error);
@@ -64,20 +64,20 @@ const getOnePostDB = (id) => {
 };
 
 const addPostDB = (formData) => {
-  return function (dispatch, getState, { history }) {
+  return async function (dispatch, getState, { history }) {
     let _post = {
       ...initialPost,
       formData,
       date: moment().format("YYYY-MM-DD kk:mm:ss"),
     };
     console.log(_post);
-    axios({
+    await axios({
       method: "post",
       url: "http://52.78.194.238/api/postWrite",
       data: formData,
       headers: {
         "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${getCookie("is_login")}`,
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     })
       .then((res) => {

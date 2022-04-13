@@ -1,8 +1,13 @@
 import React from "react";
+import { history } from "../../redux/configureStore";
+import { actionCreators as postActions } from "../../redux/modules/post";
+import { useDispatch } from "react-redux";
+
 import { Grid, Text, Image } from "../ui";
 import { Button } from "./index";
 
 const Post = (props) => {
+  const dispatch = useDispatch();
   return (
     <React.Fragment>
       <Grid>
@@ -17,22 +22,26 @@ const Post = (props) => {
           </Grid>
           <Grid is_flex width="auto">
             <Text textAlign="right">{props.date}</Text>
-            <Button
-              padding="8px"
-              width="auto"
-              margin="0px 3px"
-              _onClick={(e) => {}}
-            >
-              수정
-            </Button>
-            <Button
-              padding="8px"
-              width="auto"
-              margin="0px 3px"
-              _onClick={(e) => {}}
-            >
-              삭제
-            </Button>
+            {props.is_me && (
+              <Button
+                padding="8px"
+                width="auto"
+                margin="0px 3px"
+                _onClick={(e) => {}}
+              >
+                수정
+              </Button>
+            )}
+            {props.is_me && (
+              <Button
+                padding="8px"
+                width="auto"
+                margin="0px 3px"
+                _onClick={(e) => {}}
+              >
+                삭제
+              </Button>
+            )}
           </Grid>
         </Grid>
         <Grid>
