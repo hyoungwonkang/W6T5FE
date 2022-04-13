@@ -6,7 +6,6 @@ import moment from "moment";
 
 const SET_COMMENT = "SET_COMMENT";
 const ADD_COMMENT = "ADD_COMMENT";
-const EDIT_COMMENT = "EDIT_COMMENT";
 const DELETE_COMMENT = "DELETE_COMMENT";
 
 const setComment = createAction(SET_COMMENT, (postId, comment_list) => ({
@@ -117,7 +116,6 @@ const actionCreators = {
   setComment,
   addComment,
   deleteComment,
-
   getCommentDB,
   addCommentDB,
   deleteCommentDB,

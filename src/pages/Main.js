@@ -2,7 +2,6 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { history } from "../redux/configureStore";
 import { actionCreators as postActions } from "../redux/modules/post";
-import { actionCreators as userActions } from "../redux/modules/user";
 
 import { Grid, Text } from "../components/ui";
 import { Button, Post } from "../components/core";
@@ -68,7 +67,6 @@ const Main = (props) => {
           );
         }
       })}
-      {/* // })} */}
     </React.Fragment>
   );
 };

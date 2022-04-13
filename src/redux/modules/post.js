@@ -6,7 +6,7 @@ import { createAction, handleActions } from "redux-actions";
 import { createAction as imageActions } from "../../redux/modules/image";
 
 //액션타입
-const GET_POST = "GET_POST"; //가져온 게시물을 넣어주는 애
+const GET_POST = "GET_POST";
 const GETONE_POST = "GETONE_POST";
 const ADD_POST = "ADD_POST";
 const EDIT_POST = "EDIT_POST";
@@ -28,7 +28,6 @@ const deletePost = createAction(DELETE_POST, (postId) => ({
 const initialState = {
   list: [],
   detail: [],
-  // paging: { star: null, next: null, size: 3 },
 };
 const initialPost = {
   date: moment().format("YYYY-MM-DD kk:mm:ss"),
@@ -86,7 +85,6 @@ const addPostDB = (formData) => {
     })
       .then((res) => {
         dispatch(addPost(_post));
-        // dispatch(imageActions.setPreview(null));
 
         history.push("/main");
       })

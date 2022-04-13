@@ -3,7 +3,6 @@ import { Input, Button } from "./index";
 import { Grid } from "../ui";
 
 import { actionCreators as commentActions } from "../../redux/modules/comment";
-import { actionCreators as userActions } from "../../redux/modules/user";
 import { useDispatch, useSelector } from "react-redux";
 import { history } from "../../redux/configureStore";
 

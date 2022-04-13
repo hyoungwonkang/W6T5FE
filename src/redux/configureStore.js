@@ -3,7 +3,7 @@ import thunk from "redux-thunk";
 import { createBrowserHistory } from "history";
 import { connectRouter } from "connected-react-router";
 
-import User from "./modules/user"; //user의 리듀서를 가져온 것이다.
+import User from "./modules/user";
 import Post from "./modules/post";
 import Image from "./modules/image";
 import Comment from "./modules/comment";
@@ -22,18 +22,16 @@ const rootReducer = combineReducers({
 
 //미들웨어 준비
 const middlewares = [thunk.withExtraArgument({ history: history })];
-const env = process.env.NODE_ENV; // 지금이 어느 환경인 지 알려줌. (개발환경, 프로덕션(배포)환경 등)
+const env = process.env.NODE_ENV;
 if (env === "development") {
-  const { logger } = require("redux-logger"); // 개발환경에서는 로거라는 걸 하나만 더 써줌.
+  const { logger } = require("redux-logger");
   middlewares.push(logger);
 }
 
 //redux devTools 설정
 const composeEnhancers =
   typeof window === "object" && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-        // Specify extension’s options like name, actionsBlacklist, actionsCreators, serialize...
-      })
+    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
     : compose;
 
 //미들웨어 묶기

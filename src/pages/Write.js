@@ -1,32 +1,26 @@
 import React from "react";
 import { Grid, Image, Text } from "../components/ui";
-import { Button, Input, Upload } from "../components/core";
+import { Button, Input } from "../components/core";
 
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as postActions } from "../redux/modules/post";
 import { actionCreators as imageActions } from "../redux/modules/image";
 
 const Write = (props) => {
+  const dispatch = useDispatch();
   const { history } = props;
   const posts = useSelector((state) => state.post.list);
   const users = useSelector((state) => state.user.userInfo);
+  const userId = users.userId;
+  const userName = users.userName;
+  const preview = useSelector((state) => state.image.preview);
 
+  //수정 조건
   const postId = props.match.params.id;
   const is_edit = postId ? true : false;
   let _post = is_edit ? posts.find((p) => p.id === postId) : null;
 
-  const fileInput = React.useRef(null);
-  const selectFile = (e) => {
-    const reader = new FileReader();
-    const file = fileInput.current.files[0];
-
-    reader.readAsDataURL(file);
-
-    reader.onloadend = () => {
-      dispatch(imageActions.setPreview(reader.result));
-    };
-  };
-
+  //게시물 불러오기
   React.useEffect(() => {
     if (is_edit && !_post) {
       console.log("게시물 정보가 없습니다.");
@@ -40,6 +34,21 @@ const Write = (props) => {
     }
   }, []);
 
+  //이미지파일 업로드
+  const fileInput = React.useRef(null);
+  const selectFile = (e) => {
+    const reader = new FileReader();
+    const file = fileInput.current.files[0];
+
+    reader.readAsDataURL(file);
+
+    reader.onloadend = () => {
+      dispatch(imageActions.setPreview(reader.result));
+    };
+  };
+  const is_uploading = useSelector((state) => state.image.uploading);
+
+  //제목,내용 값
   const [title, setTitle] = React.useState(_post ? _post.title : "");
   const [content, setContent] = React.useState(_post ? _post.content : "");
   const changeTitle = (e) => {
@@ -49,12 +58,7 @@ const Write = (props) => {
     setContent(e.target.value);
   };
 
-  const dispatch = useDispatch();
-  const is_uploading = useSelector((state) => state.image.uploading);
-
-  const userId = users.userId;
-  const userName = users.userName;
-
+  //작성 버튼
   const addPost = () => {
     if (!fileInput.current || fileInput.current.files.length === 0) {
       window.alert("게시글을 모두 작성해주세요.");
@@ -74,8 +78,7 @@ const Write = (props) => {
     return dispatch(postActions.addPostDB(formData));
   };
 
-  const preview = useSelector((state) => state.image.preview);
-
+  //수정 버튼
   const editPost = () => {
     const file = fileInput.current.files[0];
 

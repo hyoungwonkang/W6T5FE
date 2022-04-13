@@ -2,17 +2,9 @@ import React from "react";
 import { Grid, Text } from "../ui";
 import { Button } from "./index";
 
-import { getCookie, deleteCookie } from "../../shared/Cookie";
-
-import { useSelector, useDispatch } from "react-redux";
-import { actionCreators as userActions } from "../../redux/modules/user";
-
 import { history } from "../../redux/configureStore";
 
 const Header = (props) => {
-  const dispatch = useDispatch();
-  const is_login = useSelector((state) => state.user.is_login);
-
   return (
     <React.Fragment>
       <Grid is_flex padding="0px 0px 20px 0px ">

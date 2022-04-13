@@ -2,14 +2,12 @@ import React from "react";
 import { Grid, Text, Image } from "../ui";
 import { Button } from "../core";
 
-import { history } from "../../redux/configureStore";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as commentActions } from "../../redux/modules/comment";
 
 const CommentList = (props) => {
   const dispatch = useDispatch();
   const comment_list = useSelector((state) => state.comment.list);
-  const user = useSelector((state) => state.user.userInfo);
   const { postId } = props;
 
   React.useEffect(() => {
