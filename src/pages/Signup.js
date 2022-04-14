@@ -5,7 +5,6 @@ import { Grid, Text } from '../components/ui';
 import { Button, Input, Upload } from '../components/core';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { actionCreators as postActions } from '../redux/modules/post';
 import { actionCreators as userActions } from '../redux/modules/user';
 import { actionCreators as imageActions } from '../redux/modules/image';
 
@@ -33,14 +32,10 @@ const Signup = () => {
   const changeGender = (e) => {
     setGender(e.target.value);
   };
-  // const genderChange = () => {
-  //   setGender((check: boolean) => !check);
-  // };
 
   //프로필 사진 함수
   const fileInput = React.useRef(null);
   const is_uploading = useSelector((state) => state.image.uploading);
-  // const userProfile = useSelector((state) => state.profile.profile_url);
 
   //프로필 사진 선택하기
   const selectFile = (e) => {
@@ -70,30 +65,6 @@ const Signup = () => {
         console.log(err);
       });
   };
-
-  // const signup = () => {
-  //   if (!fileInput.current || fileInput.current.files.length === 0) {
-  //     window.alert('프로필사진을 등록해주세요.');
-  //     return;
-  //   }
-
-  //   const file = fileInput.current.files[0];
-  //   console.log(profile);
-
-  //   const formData = new FormData();
-
-  //   formData.append('userId', userId);
-  //   formData.append('userName', userName);
-  //   formData.append('password', password);
-  //   formData.append('pwConfirm', pwConfirm);
-  //   formData.append('userProfile', file);
-  //   formData.append('gender', gender);
-
-  //   // console.log("formData", formData);
-
-  //   return dispatch(userActions.singnupM(formData));
-  //   //  console.log(formData);
-  // };
 
   //회원가입
   const signup = (e) => {
@@ -141,14 +112,16 @@ const Signup = () => {
       gender,
       '의 회원가입 요청을 dispatch 했습니다.'
     );
+    //formData 말고 다른 데이터는 디스패치에서 쓰면 안됨
     return dispatch(
       userActions.signupM(
-        userId,
-        password,
-        pwConfirm,
-        userName,
-        gender,
-        userProfile
+        formData
+        // userId,
+        // password,
+        // pwConfirm,
+        // userName,
+        // gender,
+        // userProfile
       )
     );
     //  console.log(formData);
@@ -238,8 +211,6 @@ const Signup = () => {
               />
             </RadioGroup>
           </FormControl>
-          {/* {gender && <Text>성별</Text>}
-          <button onClick={genderChange}>Change!</button> */}
         </Grid>
         {/* 회원가입버튼 */}
         <Button text='회원가입하기' _onClick={signup}></Button>
