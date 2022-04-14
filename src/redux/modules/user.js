@@ -22,24 +22,26 @@ const initialState = {
 };
 
 // middleware actions
-const signupM = (userId, userName, password, pwConfirm, gender) => {
-  return (dispatch, getState, { history }) => {
-    console.log(userId, userName, password, pwConfirm, gender);
-    const userInfo = {
-      userId: userId,
-      userName: userName,
-      password: password,
-      pwConfirm: pwConfirm,
-      gender: gender,
-      // email: 'eve.holt@reqres.in',
-      // password: 'pistol',
+const signupM = (formData) => {
+  return async (dispatch, getState, { history }) => {
+    // console.log(userId, userName, password, pwConfirm, userProfile, gender);
+    let userInfo = {
+      formData,
     };
+    console.log(userInfo);
     console.log("회원 가입 중입니다.");
 
-    axios
-      .post("http://52.78.194.238/api/signup", userInfo)
+    await axios({
+      method: "post",
+      url: "http://52.78.194.238/api/signup",
+      data: formData,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
       .then((res) => {
         console.log(res);
+        dispatch(getUser(userInfo));
         window.alert("회원가입이 완료되었습니다.");
         history.replace("/login");
       })

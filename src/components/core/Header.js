@@ -4,7 +4,16 @@ import { Button } from "./index";
 
 import { history } from "../../redux/configureStore";
 
+import { useDispatch, useSelector } from "react-redux";
+import { actionCreators as userActions } from "../../redux/modules/user";
 const Header = (props) => {
+  const dispatch = useDispatch();
+  const is_login = useSelector((state) => state.user.is_login);
+
+  const logout = () => {
+    dispatch(userActions.logoutM());
+  };
+
   return (
     <React.Fragment>
       <Grid is_flex padding="0px 0px 20px 0px ">
@@ -33,13 +42,16 @@ const Header = (props) => {
           </Button>
         </Grid>
         <Grid width="auto">
-          <Button
-            text="로그인"
-            _onClick={() => {
-              history.push("/login");
-            }}
-            padding="10px 20px"
-          ></Button>
+          {is_login ? (
+            <Button text="로그아웃" _onClick={logout}></Button>
+          ) : (
+            <Button
+              text="로그인"
+              _onClick={() => {
+                history.push("/login");
+              }}
+            ></Button>
+          )}
         </Grid>
       </Grid>
     </React.Fragment>
