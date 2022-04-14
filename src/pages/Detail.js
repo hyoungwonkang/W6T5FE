@@ -21,13 +21,22 @@ const Detail = (props) => {
 
   return (
     <React.Fragment>
-      <Container component='main' maxWidth='xs'>
+      <Container
+        sx={{
+          marginTop: 20,
+        }}
+        component='main'
+        maxWidth='xs'
+      >
         <Grid_>
+          <Text size='1.5em' bold>
+            {post.title}
+          </Text>
           <Grid>
             {post && (
               <Post {...post} is_me={post.userId === user.userInfo.userId} />
             )}
-            <Text bold>{post.title}</Text>
+
             <Grid_
               scroll
               height='150px'

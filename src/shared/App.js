@@ -1,4 +1,5 @@
 import React from 'react';
+import '../index.css';
 import { Route } from 'react-router-dom';
 import { ConnectedRouter } from 'connected-react-router';
 

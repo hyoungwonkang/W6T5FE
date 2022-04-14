@@ -21,7 +21,7 @@ const Header = (props) => {
   };
   return (
     <React.Fragment>
-      <Grid_ is_flex padding='4px 16px'>
+      <Grid_ bg='white' fix is_flex padding='4px 16px'>
         <Button
           variant='h6'
           noWrap

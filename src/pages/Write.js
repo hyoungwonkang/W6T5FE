@@ -94,7 +94,7 @@ const Write = (props) => {
 
   return (
     <React.Fragment>
-      <Grid_ padding='16px 10px'>
+      <Grid_ margin='120px 0px 0px 0px' padding='16px 10px'>
         <Text size='20px' bold width='auto'>
           {is_edit ? '게시물 수정' : '게시물 작성'}
         </Text>

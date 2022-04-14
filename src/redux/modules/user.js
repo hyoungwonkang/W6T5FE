@@ -63,7 +63,7 @@ const loginM = (userId, password) => {
         console.log(res, '로그인 중입니다.');
         localStorage.setItem('token', res.data.token);
         console.log('로그인 성공!');
-        history.replace('/home');
+        history.replace('/');
         window.location.reload();
       })
       .catch((err) => {

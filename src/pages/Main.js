@@ -25,7 +25,7 @@ const Main = (props) => {
     <React.Fragment>
       {/* 상단 업로드 및 유저네임 */}
       {user.userId && (
-        <Grid_ right>
+        <Grid_ margin='120px 0px 0px 0px' right>
           <Button
             onClick={() => {
               history.push('/postWrite');
