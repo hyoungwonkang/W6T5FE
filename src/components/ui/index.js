@@ -1,4 +1,6 @@
-import Grid from './Grid';
+import Grid_ from './Grid_';
 import Image from './Image';
 import Text from './Text';
-export { Grid, Image, Text };
+import GlobalStyle from './GlobalStyle';
+
+export { Grid_, Image, Text, GlobalStyle };

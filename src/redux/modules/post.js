@@ -1,29 +1,38 @@
 import axios from 'axios';
-import { createAction, handleActions } from 'redux-actions';
-
 import { produce } from 'immer';
 import moment from 'moment';
 
+import { createAction, handleActions } from 'redux-actions';
+import { createAction as imageActions } from '../../redux/modules/image';
+
 //액션타입
-const GET_POST = 'GET_POST'; //가져온 게시물을 넣어주는 애
+const GET_POST = 'GET_POST';
 const GETONE_POST = 'GETONE_POST';
 const ADD_POST = 'ADD_POST';
+const EDIT_POST = 'EDIT_POST';
+const DELETE_POST = 'DELETE_POST';
 
 //액션생성
 const getPost = createAction(GET_POST, (posts) => ({ posts }));
 const getOnePost = createAction(GETONE_POST, (post) => ({ post }));
 const addPost = createAction(ADD_POST, (post) => ({ post }));
+const editPost = createAction(EDIT_POST, (postId, post) => ({
+  postId,
+  post,
+}));
+const deletePost = createAction(DELETE_POST, (postId) => ({
+  postId,
+}));
 
 //초기값
 const initialState = {
   list: [],
   detail: [],
-  // paging: { star: null, next: null, size: 3 },
 };
 const initialPost = {
   date: moment().format('YYYY-MM-DD kk:mm:ss'),
-  image: '이미지2',
-  content: '리액트',
+  image: '',
+  content: '',
 };
 
 //미들웨어
@@ -33,13 +42,11 @@ const getPostDB = () => {
       // .orderBy("date", "desc")
       .get('http://52.78.194.238/api/postGet')
       .then((res) => {
-        console.log(res.data);
         let _posts = [];
         res.data.posts.forEach((posts) => {
           _posts.push({ id: posts.id, ...posts });
         });
         dispatch(getPost(_posts));
-        console.log('확인');
       })
       .catch((error) => {
         console.log(error);
@@ -52,9 +59,7 @@ const getOnePostDB = (id) => {
     await axios
       .get(`http://52.78.194.238/api/detail/${id}`)
       .then((res) => {
-        console.log(res.data);
         let post = res.data.detail;
-        console.log(post);
         dispatch(getOnePost(post));
       })
       .catch((error) => {
@@ -68,9 +73,7 @@ const addPostDB = (formData) => {
     let _post = {
       ...initialPost,
       formData,
-      date: moment().format('YYYY-MM-DD kk:mm:ss'),
     };
-    console.log(_post);
     await axios({
       method: 'post',
       url: 'http://52.78.194.238/api/postWrite',
@@ -81,15 +84,64 @@ const addPostDB = (formData) => {
       },
     })
       .then((res) => {
-        console.log(res);
         dispatch(addPost(_post));
-        // dispatch(imageActions.setPreview(null));
 
         history.push('/main');
       })
       .catch((error) => {
-        window.alert('포스트 작성에 문제가 있습니다.');
+        window.alert('게시물 작성에 문제가 있습니다.');
         console.log('게시물 작성이 실패했습니다.', error);
+      });
+  };
+};
+
+const editPostDB = (postId, formData) => {
+  return async function (dispatch, getState, { history }) {
+    if (!postId) {
+      console.log('게시물 정보를 찾을 수 없어요.');
+      return;
+    }
+    const _image = getState().image.preview;
+
+    const _post_index = getState().post.list.findIndex(
+      (p) => p.postId === postId
+    );
+    const _post = getState().post.list[_post_index];
+    let post = {
+      ..._post,
+      formData,
+    };
+
+    await axios({
+      method: 'post',
+      url: `http://52.78.194.238/api/postEdit/${postId}`,
+      data: formData,
+      headers: {
+        'Content-Type': `multipart/form-data; boundary=${formData._boundary}`,
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    })
+      .then((res) => {
+        dispatch(editPost(post));
+        history.push('/main');
+      })
+      .catch((error) => {
+        window.alert('이미지,제목,내용 수정이 필요합니다.');
+        console.log('게시물 수정이 실패했습니다.', error);
+      });
+  };
+};
+
+const deletePostDB = (id) => {
+  return async function (dispatch, getState, { history }) {
+    await axios
+      .delete(`http://52.78.194.238/api/detail/${id}`)
+      .then((res) => {
+        dispatch(deletePost(id));
+      })
+      .catch((err) => {
+        window.alert('게시물 삭제가 실패했습니다.');
+        console.log('게시물 삭제 실패', err);
       });
   };
 };
@@ -117,6 +169,15 @@ export default handleActions(
       produce(state, (draft) => {
         draft.list.unshift(action.payload.post);
       }),
+    [EDIT_POST]: (state, action) =>
+      produce(state, (draft) => {
+        let index = draft.list.findIndex((p) => p.id === action.payload.postId);
+        draft.list[index] = { ...draft.list[index], ...action.payload.post };
+      }),
+    [DELETE_POST]: (state, action) =>
+      produce(state, (draft) => {
+        draft.list = draft.list.filter((v) => v.id !== action.payload.postId);
+      }),
   },
   initialState
 );
@@ -125,9 +186,13 @@ const actionCreators = {
   getPost,
   getOnePost,
   addPost,
+  editPost,
+  deletePost,
   getPostDB,
   getOnePostDB,
   addPostDB,
+  editPostDB,
+  deletePostDB,
 };
 
 export { actionCreators };

@@ -6,18 +6,18 @@ import { history } from '../redux/configureStore';
 import { actionCreators as userActions } from '../redux/modules/user';
 import { useDispatch } from 'react-redux';
 
-import { Grid, Image } from '../components/ui';
+import { Grid_, GlobalStyle } from '../components/ui';
 import { Header } from '../components/core';
 
+import Home from '../pages/Home';
 import Login from '../pages/Login';
 import Signup from '../pages/Signup';
 import Main from '../pages/Main';
+import Write from '../pages/Write';
+import Detail from '../pages/Detail';
 
 function App() {
   const dispatch = useDispatch();
-
-  // const token = getCookie('is_login');
-
   React.useEffect(() => {
     if (localStorage.getItem('token')) {
       dispatch(userActions.loginCheckM());
@@ -27,23 +27,19 @@ function App() {
 
   return (
     <React.Fragment>
-      <Header />
-      <Grid is_flex padding='4px 16px'>
-        <Grid padding='4px 16px'>
-          <Grid padding='0px 16px' bg={'#EFF6FF'}>
-            <Grid></Grid>
-          </Grid>
-        </Grid>
-      </Grid>
-
-      <ConnectedRouter history={history}>
-        <Route path='/home'>
-          <Image shape='rectangle'></Image>
-        </Route>
-        <Route path='/main' exact component={Main} />
-        <Route path='/login' exact component={Login} />
-        <Route path='/signup' exact component={Signup} />
-      </ConnectedRouter>
+      <GlobalStyle />
+      <Grid_>
+        <Header></Header>
+        <ConnectedRouter history={history}>
+          <Route path='/' exact component={Home} />
+          <Route path='/login' exact component={Login} />
+          <Route path='/signup' exact component={Signup} />
+          <Route path='/main' exact component={Main} />
+          <Route path='/postWrite' exact component={Write} />
+          <Route path='/postWrite/:id' exact component={Write} />
+          <Route path='/detail/:id' exact component={Detail} />
+        </ConnectedRouter>
+      </Grid_>
     </React.Fragment>
   );
 }

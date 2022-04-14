@@ -1,14 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { Text, Grid } from '../ui';
+import { Text, Grid_ } from '../ui';
 
 const Input = (props) => {
   const { label, placeholder, _onChange, type, multiLine, value } = props;
 
   if (multiLine) {
     return (
-      <Grid>
+      <Grid_>
         {label && <Text margin='0px'>{label}</Text>}{' '}
         {/*라벨에 조건문을 걸어서 글을 쓸때만 나오게 합니다.*/}
         <ElTextarea
@@ -17,17 +17,17 @@ const Input = (props) => {
           placeholder={placeholder}
           onChange={_onChange}
         />
-      </Grid>
+      </Grid_>
     );
   }
 
   return (
     <React.Fragment>
-      <Grid>
+      <Grid_>
         {label && <Text margin='0px'>{label}</Text>}{' '}
         {/*라벨에 조건문을 걸어서 글을 쓸때만 나오게 합니다.*/}
         <ElInput type={type} placeholder={placeholder} onChange={_onChange} />
-      </Grid>
+      </Grid_>
     </React.Fragment>
   );
 };

@@ -3,51 +3,62 @@ import { history } from '../../redux/configureStore';
 import { actionCreators as postActions } from '../../redux/modules/post';
 import { useDispatch } from 'react-redux';
 
-import { Grid, Text, Image } from '../ui';
-import { Button } from './index';
+import { Grid_, Text, Image } from '../ui';
+import { Button_ } from './index';
+
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import Button from '@mui/material/Button';
 
 const Post = (props) => {
   const dispatch = useDispatch();
   return (
     <React.Fragment>
-      <Grid>
-        <Grid is_flex>
-          <Grid is_flex width='auto'>
+      <Grid_>
+        <Grid_ is_flex>
+          <Grid_ is_flex width='auto'>
             <Image
               shape='circle'
               border='2px solid #dddddd'
               src_01={props.userProfile}
             />
             <Text size='18px'>{props.userName}</Text>
-          </Grid>
-          <Grid is_flex width='auto'>
+          </Grid_>
+          <Grid_ is_flex width='auto'>
             <Text textAlign='right'>{props.date}</Text>
             {props.is_me && (
               <Button
-                padding='8px'
                 width='auto'
-                margin='0px 3px'
-                _onClick={(e) => {}}
+                // margin='0px 0px'
+                onClick={(e) => {
+                  e.stopPropagation();
+                  history.push(`/postWrite/${props.id}`);
+                }}
               >
-                수정
+                <EditIcon />
               </Button>
             )}
             {props.is_me && (
               <Button
-                padding='8px'
                 width='auto'
-                margin='0px 3px'
-                _onClick={(e) => {}}
+                // margin='0px 0px'
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (window.confirm('게시물을 삭제하시겠어요?') === true) {
+                    dispatch(postActions.deletePostDB(props.id));
+                    window.location.reload();
+                  }
+                }}
               >
-                삭제
+                <DeleteIcon />
               </Button>
             )}
-          </Grid>
-        </Grid>
-        <Grid>
+          </Grid_>
+        </Grid_>
+        <Grid_>
           <Image shape='rectangle' src_02={props.image}></Image>
-        </Grid>
-      </Grid>
+        </Grid_>
+      </Grid_>
     </React.Fragment>
   );
 };

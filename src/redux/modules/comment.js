@@ -6,22 +6,28 @@ import moment from 'moment';
 
 const SET_COMMENT = 'SET_COMMENT';
 const ADD_COMMENT = 'ADD_COMMENT';
-
-const LOADING = 'LOADING';
+const DELETE_COMMENT = 'DELETE_COMMENT';
 
 const setComment = createAction(SET_COMMENT, (postId, comment_list) => ({
   postId,
   comment_list,
 }));
-const addComment = createAction(ADD_COMMENT, (postId, comment) => ({
-  postId,
-  comment,
+const addComment = createAction(
+  ADD_COMMENT,
+  (userId, postId, comment, userProfile) => ({
+    userId,
+    postId,
+    comment,
+    userProfile,
+  })
+);
+const deleteComment = createAction(DELETE_COMMENT, (commentId) => ({
+  commentId,
 }));
-
-// const loading = createAction(LOADING, (is_loading) => ({ is_loading }));
 
 const initialState = {
   list: {},
+  comment_list: [],
   is_loading: false,
 };
 
@@ -43,20 +49,48 @@ const getCommentDB = (postId) => {
   };
 };
 
-const addCommentDB = (postId, comment) => {
+const addCommentDB = (userId, postId, comment, userProfile) => {
   return async function (dispatch, getState, { history }) {
-    let comment = await axios
-      .post(`http://52.78.194.238/api/comment/${postId}`, {
+    let _comment = {
+      userId: userId,
+      postId: postId,
+      comment: comment,
+      userProfile: userProfile,
+    };
+    console.log(_comment);
+    await axios
+      .post(
+        `http://52.78.194.238/api/comment/${postId}`,
+        { ..._comment },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        }
+      )
+      .then((res) => {
+        dispatch(addComment(userId, postId, comment, userProfile));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+};
+
+const deleteCommentDB = (id) => {
+  return async function (dispatch, getState, { history }) {
+    await axios
+      .delete(`http://52.78.194.238/api/comment/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       })
       .then((res) => {
-        dispatch(addComment(postId, res.comment));
-        console.log(res);
+        dispatch(deleteComment(id));
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((err) => {
+        window.alert('댓글 삭제가 실패했습니다.');
+        console.log('댓글 삭제 실패', err);
       });
   };
 };
@@ -70,11 +104,11 @@ export default handleActions(
       }),
     [ADD_COMMENT]: (state, action) =>
       produce(state, (draft) => {
-        draft.list[action.payload.postId].unshift(action.payload.comment);
+        draft.comment_list.unshift(action.payload.comment);
       }),
-    [LOADING]: (state, action) =>
+    [DELETE_COMMENT]: (state, action) =>
       produce(state, (draft) => {
-        draft.is_loading = action.payload.is_loading;
+        draft.list = action.payload.commentId;
       }),
   },
   initialState
@@ -83,8 +117,10 @@ export default handleActions(
 const actionCreators = {
   setComment,
   addComment,
+  deleteComment,
   getCommentDB,
   addCommentDB,
+  deleteCommentDB,
 };
 
 export { actionCreators };

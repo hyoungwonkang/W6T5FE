@@ -17,6 +17,7 @@ const initialState = {
   userInfo: {
     userId: '',
     userName: '',
+    userProfile: '',
   },
   is_login: false,
 };
@@ -62,7 +63,6 @@ const loginM = (userId, password) => {
         console.log(res, '로그인 중입니다.');
         localStorage.setItem('token', res.data.token);
         console.log('로그인 성공!');
-        alert('로그인 성공!');
         history.replace('/home');
         window.location.reload();
       })
@@ -81,11 +81,11 @@ const loginCheckM = () => {
         token: localStorage.getItem('token'),
       })
       .then((res) => {
-        console.log(res);
         dispatch(
           setUser({
             userId: res.data.userInfo.userId,
             userName: res.data.userInfo.userName,
+            userProfile: res.data.userInfo.userProfile,
           })
         );
       })
@@ -100,6 +100,7 @@ const logoutM = () => {
     console.log('로그아웃 되었습니다!');
     localStorage.removeItem('token');
     dispatch(logOut());
+    window.location.reload();
   };
 };
 

@@ -1,11 +1,19 @@
 import React from 'react';
-import { Grid, Text } from '../components/ui';
-import { Input, Button } from '../components/core';
+import { Grid_, Text } from '../components/ui';
+import { Input, Button0 } from '../components/core';
 
 import { history } from '../redux/configureStore';
 
 import { useDispatch } from 'react-redux';
 import { actionCreators as userActions } from '../redux/modules/user';
+
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
+import { Typography } from '@mui/material';
+import { Avatar } from '@mui/material';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
 const Login = (props) => {
   const dispatch = useDispatch();
@@ -20,54 +28,71 @@ const Login = (props) => {
       window.alert('아이디 혹은 비밀번호가 공란입니다! 입력해주세요!');
       return;
     }
-
     dispatch(userActions.loginM(userId, password));
   };
 
   return (
     <React.Fragment>
-      <Grid padding='16px'>
-        <Text size='32px' bold>
-          로그인
-        </Text>
+      <Container component='main' maxWidth='xs'>
+        <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component='h1' variant='h5'>
+            로그인
+          </Typography>
 
-        <Grid padding='16px 0px'>
-          <Input
+          <TextField
+            margin='normal'
             label='아이디'
-            placeholder='아이디를 입력해주세요.'
-            _onChange={(e) => {
+            fullWidth
+            autoFocus
+            onChange={(e) => {
               setUserId(e.target.value);
             }}
           />
-        </Grid>
 
-        <Grid padding='16px 0px'>
-          <Input
-            label='패스워드'
-            placeholder='패스워드 입력해주세요.'
+          <TextField
+            margin='normal'
+            label='비밀번호'
+            fullWidth
             type='password'
-            _onChange={(e) => {
+            onChange={(e) => {
               setPassword(e.target.value);
             }}
           />
-        </Grid>
-        <Grid is_flex padding='4px 16px'>
+
           <Button
-            text='로그인하기'
-            _onClick={() => {
+            variant='contained'
+            fullWidth
+            sx={{ mt: 3 }}
+            onClick={() => {
               login();
               // history.push('/home');
             }}
-          ></Button>
+          >
+            로그인
+          </Button>
 
           <Button
-            text='회원가입'
-            _onClick={() => {
+            variant='contained'
+            fullWidth
+            sx={{ mt: 3, mb: 3 }}
+            onClick={() => {
               history.push('/signup');
             }}
-          ></Button>
-        </Grid>
-      </Grid>
+          >
+            회원가입
+          </Button>
+        </Box>
+      </Container>
     </React.Fragment>
   );
 };

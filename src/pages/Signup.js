@@ -1,8 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 
-import { Grid, Text } from '../components/ui';
-import { Button, Input, Upload } from '../components/core';
+import { Grid_, Text } from '../components/ui';
+import { Button0, Input, Upload } from '../components/core';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { actionCreators as userActions } from '../redux/modules/user';
@@ -15,6 +15,14 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormLabel from '@mui/material/FormLabel';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import { Typography } from '@mui/material';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import { Avatar } from '@mui/material';
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
+import Grid from '@mui/material/Grid';
 
 const Signup = () => {
   const dispatch = useDispatch();
@@ -113,86 +121,95 @@ const Signup = () => {
       '의 회원가입 요청을 dispatch 했습니다.'
     );
     //formData 말고 다른 데이터는 디스패치에서 쓰면 안됨
-    return dispatch(
-      userActions.signupM(
-        formData
-        // userId,
-        // password,
-        // pwConfirm,
-        // userName,
-        // gender,
-        // userProfile
-      )
-    );
-    //  console.log(formData);
+    return dispatch(userActions.signupM(formData));
   };
 
   return (
     <React.Fragment>
-      <Grid padding='16px'>
-        <Text size='32px' bold>
-          회원가입
-        </Text>
-        {/* 프로필 사진 올리기 */}
-        <input
-          type='file'
-          onChange={selectFile}
-          ref={fileInput}
-          disabled={is_uploading}
-          style={{ marginTop: '20px' }}
-        />
-        <Grid is_flex padding='16px 0px'>
-          <Input
-            label='아이디'
-            placeholder='아이디를 입력해주세요.'
-            _onChange={(e) => {
-              setUserId(e.target.value);
-            }}
+      <Container component='main' maxWidth='xs'>
+        <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component='h1' variant='h5'>
+            회원가입
+          </Typography>
+          {/* 프로필 사진 올리기 */}
+          <input
+            type='file'
+            onChange={selectFile}
+            ref={fileInput}
+            disabled={is_uploading}
+            style={{ marginTop: '20px' }}
           />
-          <Button
-            _onClick={() => {
-              if (!Check(userId)) {
-                alert('부적절한 아이디 입니다.');
-                return false;
-              }
-              idCheckAPI(userId);
-            }}
-          >
-            중복확인
-          </Button>
-        </Grid>
-        <Grid padding='16px 0px'>
-          <Input
+          <Grid_ is_flex>
+            <TextField
+              margin='normal'
+              label='아이디'
+              required
+              fullWidth
+              autoFocus
+              onChange={(e) => {
+                setUserId(e.target.value);
+              }}
+            />
+
+            <Button
+              sx={{ mt: 1 }}
+              variant='contained'
+              onClick={() => {
+                if (!Check(userId)) {
+                  alert('부적절한 아이디 입니다.');
+                  return false;
+                }
+                idCheckAPI(userId);
+              }}
+            >
+              중복확인
+            </Button>
+          </Grid_>
+          <TextField
+            margin='normal'
             label='닉네임'
-            placeholder='닉네임을 입력해주세요.'
-            _onChange={(e) => {
+            required
+            fullWidth
+            onChange={(e) => {
               setUserName(e.target.value);
             }}
           />
-        </Grid>
-        <Grid padding='16px 0px'>
-          <Input
+
+          <TextField
+            margin='normal'
             label='비밀번호'
-            placeholder='비밀번호를 입력해주세요.'
+            required
+            fullWidth
             type='password'
-            _onChange={(e) => {
+            onChange={(e) => {
               setPassword(e.target.value);
             }}
           />
-        </Grid>
-        <Grid padding='16px 0px'>
-          <Input
+
+          <TextField
+            margin='normal'
             label='비밀번호 확인'
-            placeholder='비밀번호를 다시 입력해주세요.'
+            required
+            fullWidth
             type='password'
-            _onChange={(e) => {
+            onChange={(e) => {
               setpwConfirm(e.target.value);
             }}
           />
-        </Grid>
-        {/* 성별 */}
-        <Grid>
-          <FormControl>
+
+          {/* 성별 */}
+
+          <FormControl margin='normal'>
             <FormLabel email='demo-row-radio-buttons-group-label'>
               성별을 선택하세요
             </FormLabel>
@@ -211,10 +228,18 @@ const Signup = () => {
               />
             </RadioGroup>
           </FormControl>
-        </Grid>
-        {/* 회원가입버튼 */}
-        <Button text='회원가입하기' _onClick={signup}></Button>
-      </Grid>
+
+          {/* 회원가입버튼 */}
+          <Button
+            variant='contained'
+            fullWidth
+            sx={{ mt: 3, mb: 3 }}
+            onClick={signup}
+          >
+            회원가입하기
+          </Button>
+        </Box>
+      </Container>
     </React.Fragment>
   );
 };

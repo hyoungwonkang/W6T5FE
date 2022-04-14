@@ -1,7 +1,13 @@
 import React from 'react';
 
-import { Grid, Image, Text } from '../ui';
-import { Button } from '../core';
+import { Grid_, Image, Text } from '../ui';
+import { Button0 } from '../core';
+
+import Button from '@mui/material/Button';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import SvgIcon from '@mui/material/SvgIcon';
+import HomeIcon from '@mui/icons-material/Home';
 
 import { history } from '../../redux/configureStore';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,38 +15,60 @@ import { actionCreators as userActions } from '../../redux/modules/user';
 const Header = (props) => {
   const dispatch = useDispatch();
   const is_login = useSelector((state) => state.user.is_login);
-  const userInfo = useSelector((state) => state.user.user);
 
   const logout = () => {
     dispatch(userActions.logoutM());
   };
-
   return (
     <React.Fragment>
-      <Grid is_flex padding='4px 16px'>
+      <Grid_ is_flex padding='4px 16px'>
         <Button
-          text='로고'
-          _onClick={() => {
-            history.push('/home');
+          variant='h6'
+          noWrap
+          component='div'
+          sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
+          onClick={() => {
+            history.push('/');
           }}
-        ></Button>
+        >
+          {' '}
+          <HomeIcon />
+        </Button>
         <Button
-          text='코디추천'
-          _onClick={() => {
+          variant='h6'
+          noWrap
+          component='div'
+          sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
+          onClick={() => {
             history.push('/main');
           }}
-        ></Button>
+        >
+          CODI
+        </Button>
         {is_login ? (
-          <Button text='로그아웃' _onClick={logout}></Button>
+          <Button
+            variant='h6'
+            noWrap
+            component='div'
+            sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
+            onClick={logout}
+          >
+            LOGOUT
+          </Button>
         ) : (
           <Button
-            text='로그인'
-            _onClick={() => {
+            variant='h6'
+            noWrap
+            component='div'
+            sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
+            onClick={() => {
               history.push('/login');
             }}
-          ></Button>
+          >
+            LOGIN
+          </Button>
         )}
-      </Grid>
+      </Grid_>
     </React.Fragment>
   );
 };

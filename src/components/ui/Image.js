@@ -1,45 +1,83 @@
-import { createAction, handleActions } from 'redux-actions';
-import produce from 'immer';
+import React from 'react';
+import styled from 'styled-components';
 
-// import { storage } from "../../shared/firebase";
+const Image = (props) => {
+  const { shape, src, src_01, src_02, size, border } = props;
+  const styles = {
+    src: src,
+    src_01: src_01,
+    src_02: src_02,
+    size: size,
+    border: border,
+  };
 
-const UPLOADING = 'UPLOADING';
-const UPLOAD_IMAGE = 'UPLOAD_IMAGE';
-const SET_PREVIEW = 'SET_PREVIEW';
+  if (shape === 'rectangle') {
+    return (
+      <AspectOutter>
+        <AspectInner {...styles}></AspectInner>
+      </AspectOutter>
+    );
+  }
 
-const uploading = createAction(UPLOADING, (uploading) => ({ uploading }));
-const uploadImage = createAction(UPLOAD_IMAGE, (image) => ({ image }));
-const setPreview = createAction(SET_PREVIEW, (preview) => ({ preview }));
+  if (shape === 'circle') {
+    return <ImageCircle {...styles}></ImageCircle>;
+  }
 
-const initialState = {
-  image: '',
-  uploading: false,
-  preview: null,
+  return (
+    <React.Fragment>
+      <ImageDefault {...styles}></ImageDefault>
+    </React.Fragment>
+  );
+};
+Image.defaultProps = {
+  shape: '',
+  src: 'https://i.pinimg.com/564x/fa/be/26/fabe26775b55a71fd1426f88b5a13e7b.jpg',
+  src_01:
+    'https://image.msscdn.net/images/style/detail/26197/detail_26197_1_500.jpg',
+  src_02:
+    'https://image.msscdn.net/images/prd_img/20210522/1962786/detail_1962786_1_500.jpg',
+  size: 36,
+  border: false,
 };
 
-//리듀서
-export default handleActions(
-  {
-    [UPLOAD_IMAGE]: (state, action) =>
-      produce(state, (draft) => {
-        draft.image = action.payload.image;
-        draft.uploading = false;
-      }),
-    [UPLOADING]: (state, action) =>
-      produce(state, (draft) => {
-        draft.uploading = action.payload.uploading;
-      }),
-    [SET_PREVIEW]: (state, action) =>
-      produce(state, (draft) => {
-        draft.preview = action.payload.preview;
-      }),
-  },
-  initialState
-);
+//기본 정사각형
+const ImageDefault = styled.div`
+  width: 100%;
+  height: 90vh;
+  background-image: url('${(props) => props.src}');
+  background-size: contain;
+  background-position: top;
+  ${(props) => (props.border ? `border: ${props.border};` : '')}
+`;
 
-const actionCreators = {
-  uploadImage,
-  setPreview,
-};
+//4:3비율 직사각형
+const AspectOutter = styled.div`
+  width: 100%;
+  min-width: 250px;
+  /* border: 1px solid red; */
+`;
+const AspectInner = styled.div`
+  position: relative;
+  padding-top: 100%;
+  overflow: hidden;
+  background-image: url('${(props) => props.src_02}');
+  background-size: cover;
+  background-position: top;
+  /* border: 1px solid green; */
+`;
 
-export { actionCreators };
+//원형
+const ImageCircle = styled.div`
+  --size: ${(props) => props.size}px;
+  width: var(--size);
+  height: var(--size);
+  border-radius: var(--size);
+  ${(props) => (props.border ? `border: ${props.border};` : '')}
+
+  background-image: url("${(props) => props.src_01}");
+  background-size: cover;
+  background-position: top;
+  margin: 4px;
+`;
+
+export default Image;
