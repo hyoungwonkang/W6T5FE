@@ -17,7 +17,7 @@ const Header = (props) => {
 
   return (
     <React.Fragment>
-      <Grid is_flex padding="0px 0px 20px 0px " border="1px solid red">
+      <Grid is_flex padding="0px 0px 20px 0px ">
         <Grid width="auto">
           <Button
             no_bg

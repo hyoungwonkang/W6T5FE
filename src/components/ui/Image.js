@@ -31,7 +31,7 @@ const Image = (props) => {
 };
 Image.defaultProps = {
   shape: "",
-  src: "https://static.zara.net/photos///contents/mkt/spots/ss22-north-man-new/subhome-xmedia-14-3-cnhktwkrjp//w/1132/IMAGE-landscape-0b101f9d-9363-40c1-b339-d2a1b2dd3674-default_0.jpg?ts=1649417896174",
+  src: "",
   src_01:
     "https://image.msscdn.net/images/style/detail/26197/detail_26197_1_500.jpg",
   src_02:
