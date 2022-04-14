@@ -23,6 +23,7 @@ const Detail = (props) => {
           {post && (
             <Post {...post} is_me={post.userId === user.userInfo.userId} />
           )}
+          <Text bold>{post.title}</Text>
           <Grid
             scroll
             height="150px"

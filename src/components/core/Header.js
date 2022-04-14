@@ -12,11 +12,12 @@ const Header = (props) => {
 
   const logout = () => {
     dispatch(userActions.logoutM());
+    window.location.reload();
   };
 
   return (
     <React.Fragment>
-      <Grid is_flex padding="0px 0px 20px 0px ">
+      <Grid is_flex padding="0px 0px 20px 0px " border="1px solid red">
         <Grid width="auto">
           <Button
             no_bg

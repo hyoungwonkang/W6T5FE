@@ -22,7 +22,7 @@ const CommentList = (props) => {
     <React.Fragment>
       <Grid padding="16px">
         {comment_list[postId].map((c, i) => {
-          return <CommentItem key={i} {...c} />;
+          return <CommentItem key={c + i} {...c} />;
         })}
       </Grid>
     </React.Fragment>
@@ -36,16 +36,14 @@ CommentList.defaultProps = {
 export default CommentList;
 
 const CommentItem = (props) => {
-  const { userName, date, comment, image, userId } = props;
+  const { userName, date, comment, userProfile, userId } = props;
   const user = useSelector((state) => state.user.userInfo);
   const mycomment = user.userId === userId ? true : false;
-
   const dispatch = useDispatch();
-
   return (
     <Grid is_flex>
       <Grid width="auto" center>
-        <Image shape="circle" border="2px solid #dddddd" src_01={image} />
+        <Image shape="circle" border="2px solid #dddddd" src_01={userProfile} />
         <Text>{userName}</Text>
       </Grid>
       <Grid is_flex margin="0px 0px 0px 15px">
@@ -60,8 +58,8 @@ const CommentItem = (props) => {
           _onClick={(e) => {
             e.stopPropagation();
             if (window.confirm("댓글을 삭제하시겠어요?") === true) {
-              console.log(props.id);
-              dispatch(commentActions.deleteCommentDB(props.id));
+              dispatch(commentActions.deleteCommentDB(props.commentId));
+              window.location.reload();
             }
           }}
         >

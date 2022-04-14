@@ -89,7 +89,7 @@ const addPostDB = (formData) => {
         history.push("/main");
       })
       .catch((error) => {
-        window.alert("포스트 작성에 문제가 있습니다.");
+        window.alert("게시물 작성에 문제가 있습니다.");
         console.log("게시물 작성이 실패했습니다.", error);
       });
   };
@@ -111,45 +111,6 @@ const editPostDB = (postId, formData) => {
       ..._post,
       formData,
     };
-    // if (_image === _post.image) {
-    //   await axios({
-    //     method: "post",
-    //     url: `http://52.78.194.238/api/postEdit/${postId}`,
-    //     data: _post,
-    //     headers: {
-    //       "Content-Type": `multipart/form-data; boundary=${formData._boundary}`,
-    //       Authorization: `Bearer ${localStorage.getItem("token")}`,
-    //     },
-    //   })
-    //     .then((res) => {
-    //       dispatch(
-    //         editPost(content, id, postId, title, userId, userName, __v, _id)
-    //       );
-    //       history.push("/main");
-    //     })
-    //     .catch((error) => {
-    //       window.alert("포스트 수정에 문제가 있습니다!");
-    //       console.log("게시물 수정이 실패했습니다!", error);
-    //     });
-    // } else {
-    //   await axios({
-    //     method: "post",
-    //     url: `http://52.78.194.238/api/postEdit/${postId}`,
-    //     data: formData,
-    //     headers: {
-    //       "Content-Type": `multipart/form-data; boundary=${formData._boundary}`,
-    //       Authorization: `Bearer ${localStorage.getItem("token")}`,
-    //     },
-    //   })
-    //     .then((res) => {
-    //       dispatch(editPost(post));
-    //       history.push("/main");
-    //     })
-    //     .catch((error) => {
-    //       window.alert("포스트 수정에 문제가 있습니다.");
-    //       console.log("게시물 수정이 실패했습니다.", error);
-    //     });
-    // }
 
     await axios({
       method: "post",
@@ -165,7 +126,7 @@ const editPostDB = (postId, formData) => {
         history.push("/main");
       })
       .catch((error) => {
-        window.alert("포스트 수정에 문제가 있습니다.");
+        window.alert("이미지,제목,내용 수정이 필요합니다.");
         console.log("게시물 수정이 실패했습니다.", error);
       });
   };

@@ -12,16 +12,22 @@ const setComment = createAction(SET_COMMENT, (postId, comment_list) => ({
   postId,
   comment_list,
 }));
-const addComment = createAction(ADD_COMMENT, (postId, comment) => ({
-  postId,
-  comment,
-}));
+const addComment = createAction(
+  ADD_COMMENT,
+  (userId, postId, comment, userProfile) => ({
+    userId,
+    postId,
+    comment,
+    userProfile,
+  })
+);
 const deleteComment = createAction(DELETE_COMMENT, (commentId) => ({
   commentId,
 }));
 
 const initialState = {
   list: {},
+  comment_list: [],
   is_loading: false,
 };
 
@@ -43,14 +49,13 @@ const getCommentDB = (postId) => {
   };
 };
 
-const addCommentDB = (userId, postId, comment) => {
+const addCommentDB = (userId, postId, comment, userProfile) => {
   return async function (dispatch, getState, { history }) {
     let _comment = {
       userId: userId,
       postId: postId,
       comment: comment,
-      userProfile: "userProfile",
-      date: moment().format("YYYY-MM-DD kk:mm:ss"),
+      userProfile: userProfile,
     };
     console.log(_comment);
     await axios
@@ -64,9 +69,7 @@ const addCommentDB = (userId, postId, comment) => {
         }
       )
       .then((res) => {
-        console.log("댓글작성");
-        dispatch(addComment(postId, comment));
-        console.log(res);
+        dispatch(addComment(userId, postId, comment, userProfile));
       })
       .catch((error) => {
         console.log(error);
@@ -75,10 +78,13 @@ const addCommentDB = (userId, postId, comment) => {
 };
 
 const deleteCommentDB = (id) => {
-  console.log(id);
   return async function (dispatch, getState, { history }) {
     await axios
-      .delete(`http://52.78.194.238/api/comment/${id}`)
+      .delete(`http://52.78.194.238/api/comment/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
       .then((res) => {
         dispatch(deleteComment(id));
       })
@@ -98,15 +104,11 @@ export default handleActions(
       }),
     [ADD_COMMENT]: (state, action) =>
       produce(state, (draft) => {
-        console.log(action.payload.comment);
-        draft.list[action.payload.postId].unshift(action.payload.comment);
+        draft.comment_list.unshift(action.payload.comment);
       }),
     [DELETE_COMMENT]: (state, action) =>
       produce(state, (draft) => {
-        console.log(action.payload);
-        draft.list = draft.list.filter(
-          (v) => v.id !== action.payload.commentId
-        );
+        draft.list = action.payload.commentId;
       }),
   },
   initialState

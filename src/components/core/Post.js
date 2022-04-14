@@ -44,6 +44,7 @@ const Post = (props) => {
                   e.stopPropagation();
                   if (window.confirm("게시물을 삭제하시겠어요?") === true) {
                     dispatch(postActions.deletePostDB(props.id));
+                    window.location.reload();
                   }
                 }}
               >

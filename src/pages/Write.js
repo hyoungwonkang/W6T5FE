@@ -61,7 +61,7 @@ const Write = (props) => {
   //작성 버튼
   const addPost = () => {
     if (!fileInput.current || fileInput.current.files.length === 0) {
-      window.alert("게시글을 모두 작성해주세요.");
+      window.alert("게시물을 모두 작성해주세요.");
       return;
     }
 
@@ -96,7 +96,7 @@ const Write = (props) => {
     <React.Fragment>
       <Grid padding="16px 10px">
         <Text size="20px" bold width="auto">
-          {is_edit ? "게시글 수정" : "게시글 작성"}
+          {is_edit ? "게시물 수정" : "게시물 작성"}
         </Text>
         <input
           type="file"
@@ -123,7 +123,7 @@ const Write = (props) => {
           _onChange={changeTitle}
           multiLine
           rows
-          label="게시글 제목"
+          label="제목"
         />
       </Grid>
       <Grid padding="16px">
@@ -132,7 +132,7 @@ const Write = (props) => {
           _onChange={changeContent}
           multiLine
           rows
-          label="게시글 내용"
+          label="내용"
         />
       </Grid>
       <Grid padding="16px">

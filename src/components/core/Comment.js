@@ -25,6 +25,7 @@ const Comment = (props) => {
       return;
     }
     dispatch(commentActions.addCommentDB(userId, postId, comment));
+    window.location.reload();
     setCommentText("");
   };
   return (
